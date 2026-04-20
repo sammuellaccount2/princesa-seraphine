@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Princesa de Lunaris - Uma História de Amor</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --gold-dark: #8a6f2e;
+    --cream: #f5f0e8;
+    --ink: #1a1209;
+    --ink-soft: #2e2218;
+    --rose: #8b3a52;
+    --rose-light: #c97090;
+    --shadow: rgba(26, 18, 9, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0d0a06;
+    font-family: 'EB Garamond', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Starfield background */
+  .starfield {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(ellipse at 20% 30%, #1a0e2e 0%, #0d0a06 60%);
+  }
+
+  .starfield::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(201,168,76,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 25%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 50% 10%, rgba(201,168,76,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 5%, rgba(201,168,76,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 40%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 85% 35%, rgba(201,168,76,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 50%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 45%, rgba(201,168,76,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 55%, rgba(201,168,76,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 5% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 95% 65%, rgba(201,168,76,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 45% 75%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 80%, rgba(201,168,76,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 20% 85%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 90%, rgba(201,168,76,0.2) 0%, transparent 100%);
+  }
+
+  /* Cover page */
+  #cover {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .cover-ornament {
+    color: var(--gold);
+    font-size: 2rem;
+    letter-spacing: 12px;
+    margin-bottom: 30px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.3s;
+  }
+
+  .cover-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    color: var(--gold-light);
+    letter-spacing: 4px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.6s;
+    text-shadow: 0 0 40px rgba(201,168,76,0.4), 0 2px 4px rgba(0,0,0,0.8);
+  }
+
+  .cover-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    color: var(--rose-light);
+    letter-spacing: 3px;
+    margin-bottom: 50px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.9s;
+  }
+
+  .cover-divider {
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 50px;
+    opacity: 0;
+    animation: fadeIn 1.5s ease forwards 1.2s;
+  }
+
+  .cover-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: rgba(232, 213, 163, 0.7);
+    max-width: 500px;
+    line-height: 1.8;
+    margin-bottom: 60px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 1.5s;
+  }
+
+  .btn-start {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 4px;
+    color: var(--ink);
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    border: none;
+    padding: 16px 48px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 1.8s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-start::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .btn-start:hover::before { left: 100%; }
+  .btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(201,168,76,0.4);
+  }
+
+  /* Book container */
+  #book {
+    display: none;
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  /* Table of contents */
+  #toc {
+    display: none;
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 60px 20px 80px;
+  }
+
+  .toc-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    color: var(--gold-light);
+    text-align: center;
+    letter-spacing: 6px;
+    margin-bottom: 50px;
+  }
+
+  .toc-list {
+    list-style: none;
+  }
+
+  .toc-item {
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    padding: 18px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .toc-item:hover { padding-left: 12px; }
+
+  .toc-item:hover .toc-chapter-name {
+    color: var(--gold);
+  }
+
+  .toc-chapter-num {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 3px;
+    margin-right: 20px;
+    min-width: 80px;
+  }
+
+  .toc-chapter-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--gold-light);
+    flex: 1;
+    transition: color 0.3s;
+  }
+
+  .toc-dots {
+    flex: 1;
+    border-bottom: 1px dotted rgba(201,168,76,0.3);
+    margin: 0 16px;
+  }
+
+  /* Back button */
+  .nav-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: var(--gold);
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 10px 24px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    margin: 30px 0;
+    display: inline-block;
+  }
+
+  .nav-btn:hover {
+    background: rgba(201,168,76,0.1);
+    border-color: var(--gold);
+  }
+
+  /* Chapter styles */
+  .chapter {
+    display: none;
+  }
+
+  .chapter.active {
+    display: block;
+    animation: fadeIn 0.8s ease;
+  }
+
+  .chapter-header {
+    text-align: center;
+    padding: 70px 0 50px;
+    position: relative;
+  }
+
+  .chapter-number {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .chapter-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: var(--gold-light);
+    letter-spacing: 2px;
+    line-height: 1.3;
+    margin-bottom: 16px;
+    text-shadow: 0 0 20px rgba(201,168,76,0.3);
+  }
+
+  .chapter-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--rose-light);
+    letter-spacing: 2px;
+  }
+
+  .chapter-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 30px 0;
+    color: var(--gold);
+    font-size: 1.2rem;
+    opacity: 0.7;
+  }
+
+  .chapter-ornament-line {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+
+  .chapter-ornament-line.right {
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  /* Page / text area */
+  .page {
+    background: linear-gradient(180deg, #faf6ed 0%, #f5f0e6 100%);
+    padding: clamp(30px, 6vw, 70px) clamp(24px, 7vw, 80px);
+    position: relative;
+    box-shadow:
+      0 0 0 1px rgba(201,168,76,0.2),
+      0 20px 60px rgba(0,0,0,0.6),
+      0 0 120px rgba(201,168,76,0.05);
+    border: 1px solid rgba(201,168,76,0.25);
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 12px; left: 12px; right: 12px; bottom: 12px;
+    border: 1px solid rgba(201,168,76,0.12);
+    pointer-events: none;
+  }
+
+  .page p {
+    font-size: clamp(1rem, 2.2vw, 1.13rem);
+    line-height: 1.95;
+    color: var(--ink-soft);
+    margin-bottom: 1.6em;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .page p:first-of-type::first-letter {
+    font-family: 'Cinzel', serif;
+    font-size: 4.2em;
+    font-weight: 600;
+    float: left;
+    line-height: 0.75;
+    margin: 6px 12px 0 0;
+    color: var(--gold-dark);
+    text-shadow: 2px 2px 0 rgba(201,168,76,0.2);
+  }
+
+  .page p em {
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  .page p strong {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* Dialogue */
+  .dialogue {
+    font-style: italic;
+    color: var(--ink);
+    padding: 0 16px;
+    border-left: 2px solid rgba(201,168,76,0.3);
+    margin: 1.8em 0 1.8em 16px;
+  }
+
+  /* Quote / emotional highlight */
+  .highlight {
+    background: rgba(201,168,76,0.07);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 24px 32px;
+    margin: 2em 0;
+    text-align: center;
+  }
+
+  .highlight p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.35rem) !important;
+    color: var(--gold-dark) !important;
+    margin: 0 !important;
+  }
+
+  /* Chapter nav */
+  .chapter-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 0 20px;
+    gap: 16px;
+  }
+
+  .chapter-nav-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    color: var(--gold-light);
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.25);
+    padding: 12px 24px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    flex: 1;
+    max-width: 200px;
+  }
+
+  .chapter-nav-btn:hover {
+    background: rgba(201,168,76,0.15);
+    border-color: var(--gold);
+  }
+
+  .chapter-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .chapter-counter {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: rgba(232,213,163,0.5);
+    text-align: center;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+    transition: width 0.3s ease;
+    z-index: 100;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Scroll to top */
+  .scroll-top {
+    position: fixed;
+    bottom: 30px; right: 30px;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  .scroll-top.visible { opacity: 1; pointer-events: all; }
+  .scroll-top:hover { background: rgba(201,168,76,0.3); }
+
+  /* TOC button in book */
+  .toc-link {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    color: rgba(201,168,76,0.5);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .toc-link:hover { color: var(--gold); }
+
+  @media (max-width: 600px) {
+    .page { padding: 28px 22px; }
+    .page::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="starfield"></div>
+<div class="progress-bar" id="progress"></div>
+
+<!-- COVER -->
+<div id="cover">
+  <div class="cover-ornament">✦ ✦ ✦</div>
+  <h1 class="cover-title">A Princesa<br>de Lunaris</h1>
+  <p class="cover-subtitle">Uma história de amor entre coroas e tempestades</p>
+  <div class="cover-divider"></div>
+  <p class="cover-desc">
+    Onde o dever pesa mais que ouro<br>
+    e o coração insiste em ser mais forte<br>
+    que qualquer reino.
+  </p>
+  <button class="btn-start" onclick="showTOC()">Começar a Leitura</button>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div id="toc">
+  <button class="nav-btn" onclick="showCover()">← Voltar à Capa</button>
+  <h2 class="toc-title">Sumário</h2>
+  <ul class="toc-list">
+    <li class="toc-item" onclick="openChapter(0)">
+      <span class="toc-chapter-num">Prólogo</span>
+      <span class="toc-chapter-name">O Peso de uma Coroa</span>
+    </li>
+    <li class="toc-item" onclick="openChapter(1)">
+      <span class="toc-chapter-num">Capítulo I</span>
+      <span class="toc-chapter-name">O Estranho no Jardim da Lua</span>
+    </li>
+    <li class="toc-item" onclick="openChapter(2)">
+      <span class="toc-chapter-num">Capítulo II</span>
+      <span class="toc-chapter-name">Palavras que Não Deveriam Ter Sido Ditas</span>
+    </li>
+    <li class="toc-item" onclick="openChapter(3)">
+      <span class="toc-chapter-num">Capítulo III</span>
+      <span class="toc-chapter-name">O Baile das Sombras</span>
+    </li>
+    <li class="toc-item" onclick="openChapter(4)">
+      <span class="toc-chapter-num">Capítulo IV</span>
+      <span class="toc-chapter-name">Entre o Dever e o Desejo</span>
+    </li>
+    <li class="toc-item" onclick="openChapter(5)">
+      <span class="toc-chapter-num">Capítulo V</span>
+      <span class="toc-chapter-name">O Quase-Beijo sob a Chuva</span>
+    </li>
+    <li class="toc-item" onclick="openChapter(6)">
+      <span class="toc-chapter-num">Capítulo VI</span>
+      <span class="toc-chapter-name">Ciúme é um Veneno de Sabor Doce</span>
+    </li>
+    <li class="toc-item" onclick="openChapter(7)">
+      <span class="toc-chapter-num">Capítulo VII</span>
+      <span class="toc-chapter-name">A Grande Traição</span>
+    </li>
+    <li class="toc-item" onclick="openChapter(8)">
+      <span class="toc-chapter-num">Capítulo VIII</span>
+      <span class="toc-chapter-name">O Inverno que Durou uma Eternidade</span>
+    </li>
+    <li class="toc-item" onclick="openChapter(9)">
+      <span class="toc-chapter-num">Capítulo IX</span>
+      <span class="toc-chapter-name">O Reencontro</span>
+    </li>
+    <li class="toc-item" onclick="openChapter(10)">
+      <span class="toc-chapter-num">Capítulo X</span>
+      <span class="toc-chapter-name">A Declaração</span>
+    </li>
+    <li class="toc-item" onclick="openChapter(11)">
+      <span class="toc-chapter-num">Epílogo</span>
+      <span class="toc-chapter-name">Onde o Sol Toca o Mar</span>
+    </li>
+  </ul>
+</div>
+
+<!-- BOOK -->
+<div id="book">
+
+  <!-- PRÓLOGO -->
+  <div class="chapter" id="chapter-0">
+    <div class="chapter-header">
+      <span class="chapter-number">Prólogo</span>
+      <h2 class="chapter-title">O Peso de uma Coroa</h2>
+      <p class="chapter-subtitle">Reino de Lunaris — Primavera</p>
+    </div>
+    <div class="chapter-ornament">
+      <div class="chapter-ornament-line"></div>
+      ✦
+      <div class="chapter-ornament-line right"></div>
+    </div>
+    <div class="page">
+      <p>Dizem os antigos sábios de Lunaris que toda coroa carrega, gravado em seu metal, o peso de todas as lágrimas que foram derramadas para que ela existisse. Não as lágrimas de conquista, não as lágrimas de glória — mas as lágrimas silenciosas, aquelas que rolam pelo rosto de quem precisa sorrir quando o coração está partido, de quem precisa ser forte quando os joelhos já não aguentam mais.</p>
+
+      <p>A Princesa <strong>Seraphine Waldorf</strong> conhecia esse peso desde que tinha sete anos, quando sua mãe colocou em sua cabeça uma coroa de flores e disse, com aquela voz suave e implacável ao mesmo tempo: <em>"Um dia será de ouro, minha filha. E você vai aprender que ouro é bonito, mas pesa."</em></p>
+
+      <p>Ela aprendeu. Deus, como aprendeu.</p>
+
+      <p>Seraphine cresceu nos corredores marmorizados do Palácio de Lunaris como a maioria das princesas crescia — entre lições de diplomacia e dança, entre a língua afiada dos conselheiros e os sorrisos calculados das damas da corte. Mas havia algo nela que nunca se dobrou completamente à moldura que tentavam encaixá-la: havia uma teimosia silenciosa nos seus olhos cor de âmbar, um brilho que persistia mesmo quando o protocolo exigia que ela ficasse apagada.</p>
+
+      <p>Aos dezoito anos, Seraphine era tudo o que uma princesa deveria ser — e tudo o que nunca deveria ter sido. Era inteligente demais para aceitar respostas prontas, sensível demais para fingir que a injustiça não a cortava por dentro, e forte demais para deixar que a vissem sangrar. Tinha a voz firme de quem aprendeu a falar em salões cheios de homens que prefeririam seu silêncio, e o coração mole de quem ainda chorava por borboletas mortas escondida na biblioteca às três da manhã.</p>
+
+      <div class="highlight">
+        <p>Ela era uma contradição em forma de princesa — e talvez fosse exatamente por isso que o destino tivesse reservado para ela um amor igualmente contraditório.</p>
+      </div>
+
+      <p>O Reino de Lunaris vivia, naquele ano, sobre uma fissura. A paz entre os reinos vizinhos era frágil como vidro esticado demais: ao norte, o Ducado de Vorn aumentava suas tropas às margens do rio Areth; ao sul, os mercadores de Selenne ameaçavam romper os acordos comerciais que alimentavam metade da população; e dentro dos próprios muros do palácio, a corte se dividia entre aqueles que acreditavam que Seraphine deveria casar logo — para selar uma aliança, para estabilizar o trono, para dar ao reino um herdeiro antes que o inverno chegasse com algo pior que neve.</p>
+
+      <p>Ela ouvia tudo isso e sentia o ouro da coroa ficando mais pesado a cada dia.</p>
+
+      <p>E então, numa noite de lua cheia que transbordava luz prateada sobre os jardins do palácio, o destino — aquele narrador irônico e implacável — enviou até ela um príncipe que não deveria estar ali.</p>
+
+      <p>Esta é a história de Seraphine Waldorf e <strong>Arthur Archibald</strong>.</p>
+      <p>É uma história sobre escolhas, sobre silêncios que dizem mais que palavras, sobre o tipo de amor que não pede permissão para chegar e não aceita um "não" como resposta.</p>
+      <p>É, acima de tudo, uma história verdadeira — no único sentido que importa: aquele que dói e aquece ao mesmo tempo.</p>
+    </div>
+    <div class="chapter-nav">
+      <button class="chapter-nav-btn" disabled>← Anterior</button>
+      <span class="chapter-counter"><a class="toc-link" onclick="showTOC()">Sumário</a></span>
+      <button class="chapter-nav-btn" onclick="openChapter(1)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- CAPÍTULO I -->
+  <div class="chapter" id="chapter-1">
+    <div class="chapter-header">
+      <span class="chapter-number">Capítulo I</span>
+      <h2 class="chapter-title">O Estranho no Jardim da Lua</h2>
+      <p class="chapter-subtitle">Uma noite que mudaria todas as outras</p>
+    </div>
+    <div class="chapter-ornament">
+      <div class="chapter-ornament-line"></div>
+      ✦
+      <div class="chapter-ornament-line right"></div>
+    </div>
+    <div class="page">
+      <p>O jardim da lua tinha esse nome porque florescia apenas à noite. As flores lunares de Lunaris — delicadas e brancas como o ventre de uma nuvem — abriam suas pétalas exatamente quando o sol se punha, perfumando o ar com algo que era ao mesmo tempo mel e frio de madrugada. Era o lugar favorito de Seraphine desde sempre, e era também, de forma não coincidental, o único lugar no palácio onde ninguém esperava encontrá-la.</p>
+
+      <p>Ela tinha saído pelas escadas dos fundos ainda vestida com o pesado traje de jantar — aquele de cetim azul escuro com bordados de prata que as damas insistiam em apertar demais —, sem se importar que a barra já estivesse recolhendo o orvalho da grama. O jantar com os conselheiros tinha sido uma tortura calculada: duas horas ouvindo o Barão Mervant falar sobre a necessidade de <em>"uma união real estratégica"</em> enquanto lançava olhares em direção ao filho dele sentado a três lugares de distância.</p>
+
+      <p>O filho era adequado. Era adequado da mesma forma que uma cadeira é adequada — funcional, sem graça, e completamente indiferente a você.</p>
+
+      <p>Seraphine caminhou por entre as flores lunares com os sapatos na mão, os pés descalços na grama fria, e sentiu algo nela desapertar. Era sempre assim: o jardim tinha o efeito de tirar aquela armadura invisível que ela precisava usar durante o dia. Aqui, poderia ser simplesmente uma garota de dezoito anos que estava cansada e com a sola dos pés molhada e que não sabia absolutamente o que queria da vida além de não precisar casar com o filho do Barão Mervant.</p>
+
+      <p>Ela dobrou a curva do caminho de pedras e parou.</p>
+
+      <p>Havia alguém sentado na fonte.</p>
+
+      <p>Não deveria haver ninguém sentado na fonte. O jardim da lua era um espaço privado, de acesso restrito aos membros da família real — o que significava, naquele momento da história, essencialmente apenas Seraphine. E, no entanto, ali estava ele: um rapaz, aparentemente da sua idade, sentado na borda da fonte com os cotovelos sobre os joelhos e o rosto voltado para cima, olhando para a lua como se ela lhe devesse alguma coisa.</p>
+
+      <p>O primeiro instinto de Seraphine foi chamar a guarda.</p>
+
+      <p>O segundo foi ficar olhando.</p>
+
+      <p>Ele tinha cabelos escuros e compridos, levemente ondulados nas pontas, que caíam sobre a testa e sobre o colarinho aberto de uma camisa branca — uma camisa que era claramente boa, de tecido caro, mas estava com a gola desabotoada e as mangas dobradas até o cotovelo de uma forma que sugeria que o dono não se importava muito com o que as pessoas pensavam sobre isso. Era bem-feito, com aquela presença tranquila de quem não precisa ocupar muito espaço para ser notado. E quando a lua bateu de uma certa forma em seu rosto, Seraphine viu os olhos — castanho-escuro, profundos, com aquela qualidade específica de olhos que viram coisas que você não viu e que por isso guardam uma história.</p>
+
+      <p>Ele ouviu o passo dela na grama — ou talvez tivesse sentido o olhar — e virou a cabeça.</p>
+
+      <p>Por um segundo, os dois se fitaram.</p>
+
+      <p>E então, para total espanto de Seraphine, o canto da boca dele se ergueu numa expressão que era quase um sorriso, quase um desafio, quase uma pergunta — tudo ao mesmo tempo.</p>
+
+      <div class="dialogue">— Você vai me denunciar ou vai me deixar terminar de admirar a lua? — ele disse, com uma voz que tinha a textura de algo entre o sério e o bem-humorado. — Porque, a ser honesto, preferia a segunda opção.
+      </div>
+
+      <p>Seraphine entrou no jardim. Não porque ela tivesse decidido, exatamente — foi mais como se os pés tivessem tomado uma decisão sem consultar o cérebro.</p>
+
+      <div class="dialogue">— Este jardim é privado — ela disse, e a voz saiu mais firme do que ela esperava. — Você está aqui por engano ou por escolha?</div>
+
+      <div class="dialogue">— Por curiosidade — ele respondeu, sem levantar, o que era uma impertinência descomunal na presença de uma princesa. — Vi as flores daqui de fora e quis saber o que eram. O portão estava destrancado.</div>
+
+      <div class="dialogue">— O portão <em>nunca</em> está destrancado.</div>
+
+      <div class="dialogue">— Então ou alguém foi negligente, ou o destino tem um senso de humor — ele disse, e desta vez o sorriso chegou completo, e era o tipo de sorriso que te fazia querer saber qual era a piada. — Sente-se. A lua está particularmente generosa esta noite.</div>
+
+      <p>Seraphine ficou parada onde estava, usando a postura que as lições de etiqueta tinham colocado tão fundo nela que era quase automática agora — costas retas, queixo levemente elevado, expressão neutra.</p>
+
+      <div class="dialogue">— Você sabe com quem está falando?</div>
+
+      <p>Ele olhou para ela por um momento — aqueles olhos castanhos fazendo uma espécie de leitura que ela não estava acostumada, porque a maioria das pessoas olhava para ela e via a coroa, mesmo quando ela não estava usando nenhuma. Este olhava como se estivesse vendo outra coisa.</p>
+
+      <div class="dialogue">— Com alguém que saiu de um jantar chato antes da hora — ele disse, apontando para os sapatos na mão dela. — Sapatos de gala, vestido formal, e pés descalços na grama. Ou você é a princesa, ou é uma dama que teve um dia muito ruim. Pelos bordados, eu apostaria na princesa.</div>
+
+      <p>Algo nela se moveu — não exatamente orgulho, não exatamente irritação. Era mais perto de uma espécie de atenção involuntária, o tipo que acontece quando algo inesperado aparece no horizonte e você não consegue olhar para outro lado.</p>
+
+      <div class="dialogue">— E se eu for a princesa, isso não muda nada para você?</div>
+
+      <div class="dialogue">— Muda — ele disse, e se levantou então, finalmente, com uma graça que não era estudada mas era inegável. Era alto. — Significa que devo uma reverência. — Ele fez uma, leve e rápida, com um toque de ironia que era insolente e encantador ao mesmo tempo. — Arthur Archibald, Alteza. Segundo filho do Rei de Selenne. Aqui em visita diplomática com meu pai, que provavelmente está neste momento discutindo preços de trigo com o seu Rei.</div>
+
+      <p>Seraphine o encarou.</p>
+
+      <p>Selenne. O reino ao sul, aquele cujos mercadores ameaçavam romper os acordos comerciais. O filho do rei deles estava ali, no seu jardim, sentado na sua fonte, falando com ela sobre a lua como se fossem dois estranhos comuns numa praça comum.</p>
+
+      <div class="dialogue">— E o segundo filho do Rei de Selenne tem o hábito de invadir jardins privados de reinos estrangeiros?</div>
+
+      <div class="dialogue">— O segundo filho — disse ele, com uma qualidade específica naquela palavra, um peso antigo que se dissipou rápido demais para ela ter certeza de ter visto — tem o hábito de ir a lugares onde pode ser apenas Arthur por uns minutos. — Ele a olhou. — Creio que a princesa entende isso.</div>
+
+      <p>Ela entendeu. E odioou o quanto entendeu.</p>
+
+      <p>Porque havia naquelas palavras algo que era exatamente o que ela estava sentindo quando saiu do jantar descalça com os sapatos na mão: aquela necessidade de escapar do papel, de ser um rascunho em vez do documento final, de respirar sem que cada respiração fosse interpretada por alguém.</p>
+
+      <p>Ela foi até a fonte e se sentou. Não porque ele tivesse pedido — mas porque ela quis, e porque tinha aprendido, naquele jardim, a confiar nos próprios instintos.</p>
+
+      <div class="dialogue">— Quanto tempo você fica em Lunaris?</div>
+
+      <div class="dialogue">— Uma semana — disse ele, sentando-se também, desta vez a uma distância respeitosa. — Talvez mais, se as negociações se complicarem.</div>
+
+      <div class="dialogue">— Elas vão se complicar — ela disse, com uma certeza que veio de duas horas ouvindo o Barão Mervant. — Elas sempre se complicam.</div>
+
+      <div class="dialogue">— Então talvez eu fique mais tempo — ele disse, e havia algo na voz que ela não soube classificar.</div>
+
+      <p>Eles ficaram ali por mais uma hora, na beira da fonte, sob a luz da lua e o perfume das flores que só floresciam à noite. Falaram de coisas pequenas e de coisas grandes, de forma intercalada, da maneira que acontece quando duas pessoas que se conhecem há uma hora falam como se tivessem se conhecido a vida inteira. Ele tinha humor — o tipo seco e inteligente que ela apreciava — e ouvia de uma forma que poucos homens que ela conhecia ouviam: realmente, com os olhos no lugar certo, sem já estar formulando a resposta enquanto ela ainda falava.</p>
+
+      <p>Quando Seraphine finalmente se levantou para ir, a lua já tinha se deslocado no céu e as flores lunares começavam a fechar suas pétalas com a chegada das primeiras horas da madrugada.</p>
+
+      <div class="dialogue">— Arthur Archibald — ela disse, testando o nome na boca. — Eu deveria reportar sua presença aqui.</div>
+
+      <div class="dialogue">— Deveria — ele concordou, levantando-se. — Vai fazer isso?</div>
+
+      <p>Ela pegou seus sapatos do chão, passou por ele, e parou na entrada do caminho de volta ao palácio.</p>
+
+      <div class="dialogue">— O portão do jardim tem uma fechadura que trava por dentro — ela disse, sem olhar para trás. — Vou trancá-la quando chegar lá. Então amanhã à noite, se o portão estiver destrancado novamente, será porque alguém quis que ele estivesse.</div>
+
+      <p>Ela ouviu, enquanto se afastava, o som de algo que era quase uma risada — baixa, genuína, surpresa.</p>
+
+      <p>E sentiu, pela primeira vez em muito tempo, o peso da coroa sumir completamente.</p>
+
+      <div class="highlight">
+        <p>Ela não dormiu muito naquela noite. Ficou olhando para o teto do quarto e tentando decidir se o que estava sentindo era imprudência ou simplesmente vida — e não conseguiu separar as duas coisas.</p>
+      </div>
+    </div>
+    <div class="chapter-nav">
+      <button class="chapter-nav-btn" onclick="openChapter(0)">← Anterior</button>
+      <span class="chapter-counter"><a class="toc-link" onclick="showTOC()">Sumário</a></span>
+      <button class="chapter-nav-btn" onclick="openChapter(2)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- CAPÍTULO II -->
+  <div class="chapter" id="chapter-2">
+    <div class="chapter-header">
+      <span class="chapter-number">Capítulo II</span>
+      <h2 class="chapter-title">Palavras que Não Deveriam Ter Sido Ditas</h2>
+      <p class="chapter-subtitle">Seis noites no jardim da lua</p>
+    </div>
+    <div class="chapter-ornament">
+      <div class="chapter-ornament-line"></div>
+      ✦
+      <div class="chapter-ornament-line right"></div>
+    </div>
+    <div class="page">
+      <p>Na segunda noite, o portão estava destrancado.</p>
+
+      <p>Seraphine chegou ao jardim e Arthur já estava lá, desta vez não na fonte mas deitado na grama perto dos arbustos de flores lunares, com os braços sob a cabeça e os olhos no céu. Ele não havia se vestido para jantar — usava roupas simples, quase informais, e ela teve o pensamento involuntário de que ele parecia mais real assim do que qualquer um dos cortesãos de Lunaris que ela conhecia havia anos.</p>
+
+      <div class="dialogue">— Você sempre fica olhando para o céu como se ele pudesse te responder alguma coisa? — ela perguntou, sentando-se a alguns passos dele na grama.</div>
+
+      <div class="dialogue">— Às vezes ele responde — disse Arthur, sem mover a cabeça. — Você precisa saber fazer as perguntas certas.</div>
+
+      <div class="dialogue">— E o que você pergunta?</div>
+
+      <p>Ele ficou quieto por um momento. Aquele tipo de silêncio que não era desconforto — era consideração. Ela já notava essa diferença nele: Arthur não falava por preencher espaço. Quando dizia algo, havia algo por trás.</p>
+
+      <div class="dialogue">— Hoje eu perguntei por quanto tempo uma pessoa consegue ser o que esperam dela antes de esquecer o que ela mesma era — disse ele, finalmente. — O céu não respondeu, mas a pergunta foi boa.</div>
+
+      <p>Seraphine ficou olhando para o perfil dele — a linha da mandíbula, os cabelos escuros espalhados na grama, a expressão que tinha algo de quieto e ao mesmo tempo de muito inquieto por baixo.</p>
+
+      <div class="dialogue">— Você é o segundo filho — ela disse, devagar. — O que isso significa em Selenne?</div>
+
+      <p>Algo cruzou o rosto dele. Rápido, mas ela viu.</p>
+
+      <div class="dialogue">— Significa que tenho um irmão mais velho que vai ser rei, e que portanto minha existência é uma redundância bem-vestida — disse ele, com o tom leviano que ela já estava aprendendo a reconhecer como escudo. — Posso ser útil em casamentos diplomáticos. Guerras. Negociações que ninguém mais quer fazer. As coisas para as quais um rei tem usos mas não pode ir pessoalmente.</div>
+
+      <div class="dialogue">— Isso é uma visão muito cínica da própria vida.</div>
+
+      <div class="dialogue">— É uma visão honesta — ele disse, e virou a cabeça para olhá-la, e havia uma seriedade ali que ela não tinha visto ainda. — Você prefere que eu pretenda que não é assim?</div>
+
+      <div class="dialogue">— Eu prefiro honestidade — disse ela. — Prefiro desde sempre. Me custou muito aprender a não pretender que prefiro o contrário.</div>
+
+      <p>Ele a olhou por mais tempo do que era socialmente usual. Não de forma incómoda — mais como alguém que está tentando ler alguma coisa com cuidado.</p>
+
+      <div class="dialogue">— O que é ser a princesa herdeira de Lunaris? — ele perguntou. — Não o que eles dizem que é. O que é de verdade.</div>
+
+      <p>Ninguém tinha perguntado isso antes. Não dessa forma — não sem ter já a resposta que queriam ouvir antes mesmo de fazer a questão.</p>
+
+      <p>Seraphine deitou na grama também, de costas, e ficou olhando para as estrelas. Estava fria, a grama, mas havia algo de honesto nesse frio.</p>
+
+      <div class="dialogue">— É acordar todo dia sabendo que o que você decide importa para pessoas que você nunca vai conhecer — ela disse, devagar. — É bonito e aterrorizante em igual medida. É ter opiniões firmes sobre quase tudo e ter que medir cada palavra antes de dizer, porque palavras de princesa viram política antes de chegar ao destino. — Pausa. — É ser a pessoa mais sozinha no salão mais cheio do mundo.</div>
+
+      <p>O silêncio que veio depois foi diferente dos outros silêncios. Era o tipo de silêncio que se forma quando algo verdadeiro foi dito e o ar precisa de um momento para absorver.</p>
+
+      <div class="dialogue">— Sim — disse Arthur, com uma voz que tinha ficado mais baixa. — Eu conheço esse salão.</div>
+
+      <p>E foi naquela noite, deitados na grama do jardim da lua sob o mesmo céu que nenhum dos dois entendia completamente, que algo começou a acontecer entre eles. Não um início dramático — nada explodiu, nenhuma música invisível tocou. Foi mais sutil e mais permanente do que isso: foi o reconhecimento. Aquela sensação específica e rara de encontrar em outra pessoa algo que você achou que era só seu.</p>
+
+      <p>Nas noites que se seguiram, eles voltaram ao jardim como se houvesse um pacto tácito entre eles, nunca falado mas absolutamente real. Quinta, sexta, sábado — cada encontro acrescentava uma camada, como folhas sobre folhas sobre folhas, construindo algo que nenhum dos dois nomeava porque nomear seria tornar real o quanto já era real.</p>
+
+      <p>Na quarta noite, ele a fez rir — uma risada de verdade, daquelas que saem pelo nariz e que são completamente inapropriadas para uma princesa — com uma imitação irreverente do embaixador de Vorn que havia monopolizado o banquete da noite anterior. Seraphine ria com a mão sobre a boca, tentando se controlar, e ele ficou olhando para ela com uma expressão que ela só identificou depois: era ternura. O tipo puro, sem agenda.</p>
+
+      <p>Na quinta noite, ela percebeu que estava procurando os olhos dele nos eventos oficiais do dia. Não de forma óbvia — foi ao passar por ele no corredor do palácio, quando as delegações de Selenne cruzaram com a corte de Lunaris numa daquelas procissões formais e sem sentido, e seus olhares se encontraram por meio segundo que pareceu muito mais longo do que era. E ele deu um pequeno sorriso — apenas o canto da boca, imperceptível para qualquer pessoa que não estivesse olhando — e ela teve que olhar para outra direção para não responder com um sorriso próprio.</p>
+
+      <p>Na sexta noite, as negociações estavam se complicando de verdade, como ela havia previsto.</p>
+
+      <div class="dialogue">— Meu pai vai pedir uma extensão da visita — ele disse, e a voz tinha um peso específico que ela interpretou mais tarde. — Mais duas semanas, talvez.</div>
+
+      <div class="dialogue">— E você? — ela perguntou, com um cuidado de quem tenta não revelar o quanto a resposta importa.</div>
+
+      <div class="dialogue">— Eu fico onde ele fica — disse Arthur, e havia na frase uma fatalidade resignada que ela reconheceu como algo além de obrigação política. — Mas desta vez não me importo com isso.</div>
+
+      <p>Ela não perguntou o porquê. Ele não explicou. Mas ambos souberam, naquele momento, o que estava sendo dito nas entrelinhas — e o espaço entre eles na grama ficou, de alguma forma, menor.</p>
+
+      <div class="highlight">
+        <p>Era o tipo de proximidade que não precisava de toque para ser sentida. Era feita de olhares e pausas e palavras escolhidas com cuidado demais para serem casuais.</p>
+      </div>
+
+      <p>Na sétima noite, Seraphine chegou ao jardim e encontrou uma flor lunar colocada na borda da fonte — única, sem bilhete, sem explicação. Ela a pegou, ficou olhando para ela por um longo momento, e sentiu algo que não sabia bem nomear mas que assentava no peito como algo muito antigo e muito novo ao mesmo tempo.</p>
+
+      <p>Quando Arthur chegou, ela já estava segurando a flor.</p>
+
+      <div class="dialogue">— Ela só floresce à noite — ela disse, sem preâmbulo.</div>
+
+      <div class="dialogue">— Já sei — disse ele, sentando-se ao lado dela, mais perto do que nas noites anteriores. — Parece um tipo de coragem, isso. Florescer no escuro.</div>
+
+      <p>Ela virou o rosto para olhá-lo, e ele já estava olhando para ela — e por um momento os dois ficaram exatamente assim, olhos nos olhos, com todas aquelas noites entre eles vibrando no silêncio, e a distância entre eles era de talvez vinte centímetros mas parecia ao mesmo tempo infinita e nenhuma.</p>
+
+      <p>Arthur abriu a boca levemente, como se fosse dizer alguma coisa.</p>
+
+      <p>E então, vindo da direção do palácio, o sino da guarda tocou três vezes — a hora da ronda noturna — e os dois se afastaram como se tivessem sido puxados por cordas invisíveis.</p>
+
+      <div class="dialogue">— Preciso ir — disse ela, de pé, com a flor ainda na mão.</div>
+
+      <div class="dialogue">— Seraphine — disse ele, e o nome dela na voz dele tinha uma qualidade diferente, como se ele tivesse encontrado o peso certo para cada sílaba.</div>
+
+      <p>Ela parou, mas não virou.</p>
+
+      <div class="dialogue">— Eu... — ele começou, e então parou. Parou como alguém que encontrou a borda de algo e não está pronto para olhar para baixo. — Boa noite.</div>
+
+      <p>Ela foi embora com a flor e com a palavra não dita pendurada entre eles como um lustre que alguém esqueceu de acender.</p>
+    </div>
+    <div class="chapter-nav">
+      <button class="chapter-nav-btn" onclick="openChapter(1)">← Anterior</button>
+      <span class="chapter-counter"><a class="toc-link" onclick="showTOC()">Sumário</a></span>
+      <button class="chapter-nav-btn" onclick="openChapter(3)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- CAPÍTULO III -->
+  <div class="chapter" id="chapter-3">
+    <div class="chapter-header">
+      <span class="chapter-number">Capítulo III</span>
+      <h2 class="chapter-title">O Baile das Sombras</h2>
+      <p class="chapter-subtitle">Quando o mundo inteiro está assistindo</p>
+    </div>
+    <div class="chapter-ornament">
+      <div class="chapter-ornament-line"></div>
+      ✦
+      <div class="chapter-ornament-line right"></div>
+    </div>
+    <div class="page">
+      <p>O Grande Baile de Lunaris acontecia uma vez por ano, no solstício de verão, e era uma daquelas ocasiões que faziam o coração de Seraphine se encolher por razões inteiramente diferentes das que a corte presumia. Não era timidez — ela não tinha esse problema. Era algo mais próximo de claustrofobia: em noites de baile, ela era a princesa herdeira de Lunaris a cada segundo, em cada centímetro do seu corpo, sem intervalo.</p>
+
+      <p>Este ano, havia uma dimensão extra. As delegações estrangeiras ainda estavam presentes — o que significava que as negociações ainda não tinham chegado a um resultado. O que significava que Arthur estaria no salão.</p>
+
+      <p>Ela tentou não pensar nisso enquanto as damas a preparavam. Tentou não pensar nisso enquanto escolhiam o vestido — acabou escolhendo o vermelho vinho, com ombros descobertos e uma saia que tinha camadas como pétalas de flor, sem saber se a escolha era consciente. Tentou não pensar nisso enquanto prendiam seus cabelos escuros com ornamentos de ouro e âmbar.</p>
+
+      <p>Parou de tentar quando entrou no salão e o viu do outro lado do cômodo.</p>
+
+      <p>Arthur estava com as roupas formais de Selenne — azul escuro e prata, com o brasão discreto no peito — e parecia levemente desconfortável dentro delas, da mesma forma que alguém parece desconfortável dentro de uma fantasia que não escolheu. Estava conversando com um conselheiro, com aquela expressão educada e levemente entediada que ela estava aprendendo a reconhecer como a versão oficial dele. E então, como se sentisse o olhar — ela sempre tinha a sensação de que ele sentia quando ela olhava —, virou a cabeça.</p>
+
+      <p>Os olhares se encontraram do outro lado do salão inteiro.</p>
+
+      <p>Por um momento, o baile continuou ao redor deles — músicas, conversas, risos — e foi como se tudo isso acontecesse numa dimensão adjacente, ligeiramente distante. O sorriso que ele deu foi pequeno e privado, o tipo que não era para o salão, era para ela. E algo dentro do peito dela puxou como um anzol.</p>
+
+      <p>O protocolo ditava que ela deveria abrir o baile com seu pai, depois dançar com os representantes das delegações estrangeiras por ordem de importância diplomática. Ela dançou com o embaixador de Vorn, que era velho e tinha o pé pesado. Dançou com o filho do comerciante principal de Selenne, que era jovem e não sabia onde colocar as mãos. Dançou com o Barão Mervant, que passou a música inteira com aqueles sorriso gorduroso de quem está fazendo cálculos durante cada passo.</p>
+
+      <p>E em cada dança, os olhos dela encontravam Arthur no salão.</p>
+
+      <p>Ele estava encostado numa coluna, com uma taça de vinho na mão, observando. Não todos — <em>ela</em>. E havia no modo como ele observava algo que a fazia sentir vista de uma forma que ia além de corpos em movimento numa pista de dança. Era como se ele estivesse vendo o que havia por baixo do vestido vermelho e da postura de princesa — não de forma imprópria, mas de forma precisa. Via a forma como ela tensionava levemente o maxilar quando o Barão Mervant fazia um comentário específico. Via o momento em que ela deixava escapar um suspiro quase imperceptível entre uma música e outra.</p>
+
+      <p>Quando a quarta música começou, Arthur se afastou da coluna.</p>
+
+      <p>Caminhou pelo salão com aquela calma que era quase desconcertante — sem pressa, sem a hesitação que a maioria das pessoas tinha quando se aproximava da princesa herdeira de Lunaris — e parou diante dela. Fez a reverência correta, desta vez sem ironia, com uma formalidade que tinha alguma coisa de caloroso por baixo.</p>
+
+      <div class="dialogue">— Alteza — disse ele. — Se não houver uma próxima dança reservada, seria uma honra.</div>
+
+      <p>Havia três pessoas ao redor delas que ficaram em silêncio para ouvir a resposta. Havia olhos em todo lugar — a corte sempre tinha olhos para a princesa.</p>
+
+      <p>Seraphine deu a mão.</p>
+
+      <div class="dialogue">— A honra é minha, Príncipe Arthur.</div>
+
+      <p>Dançar com ele era diferente de dançar com os outros. Não porque ele fosse um bailarino extraordinário — era competente, não excepcional — mas porque havia uma atenção diferente no modo como ele a conduzia. Não guiava demais, não subestimava. Mantinha a distância correta do protocolo e ao mesmo tempo havia uma qualidade no toque — a mão no recuo das suas costas, os dedos entrelaçados nos dela — que era inteiramente presente.</p>
+
+      <div class="dialogue">— Você está bem? — ele perguntou, baixo o suficiente para ser apenas entre eles.</div>
+
+      <div class="dialogue">— Estou sendo observada por metade do reino — ela respondeu, igualmente baixa.</div>
+
+      <div class="dialogue">— Isso é diferente de estar bem.</div>
+
+      <div class="dialogue">— Sim — ela admitiu, mais baixo ainda. — É diferente.</div>
+
+      <p>Ele fez uma volta, a conduziu por entre os outros casais com uma segurança que ela não esperava, e quando voltaram à posição inicial ele estava olhando para ela de uma forma que fazia a distância de protocolo parecer ao mesmo tempo necessária e completamente ridícula.</p>
+
+      <div class="dialogue">— Esta noite, depois do baile — ele disse, tão baixo que era quase apenas movimento de lábios — o jardim está destrancado?</div>
+
+      <p>A música fez uma volta e eles giraram. Quando voltaram, ela estava com o rosto levemente afastado do dele — e respondeu sem olhá-lo, para ninguém que observasse parecer nada mais que dois representantes de reinos cumprindo um protocolo social.</p>
+
+      <div class="dialogue">— Estava destrancado — ela disse — desde a segunda noite.</div>
+
+      <p>Ela sentiu, mais do que viu, a forma como ele respirou naquele momento. Uma expiração curta, quase inaudível. E depois a pressão da mão nas suas costas ficou ligeiramente — apenas ligeiramente — mais firme.</p>
+
+      <div class="highlight">
+        <p>A música terminou. Eles se separaram com todas as formalidades corretas, cada um voltando para seu lado do salão. Mas havia algo entre eles agora que era visível demais para quem quisesse ver — e pelo menos uma pessoa queria.</p>
+      </div>
+
+      <p>A Condessa Mirabel, primeira conselheira do Rei de Lunaris, observou a dança com os olhos semicerrados e uma expressão que misturava cálculo com algo que poderia ser chamado, em condições muito favoráveis, de preocupação. Era uma mulher de cinquenta anos com a mente mais afiada da corte e a boca mais discreta — o que a tornava, por isso mesmo, a mais perigosa.</p>
+
+      <p>Ela anotou mentalmente: <em>a princesa e o segundo filho de Selenne. Interessante. Problemático. A ver.</em></p>
+
+      <p>Naquela noite, tarde, depois que o baile terminou e o palácio foi adormecendo ala por ala, Seraphine e Arthur se encontraram no jardim da lua pela oitava vez. Mas desta vez havia algo diferente na atmosfera — o baile ainda estava neles, de certa forma, o vestido vermelho e a formalidade e aquela dança que todo mundo viu mas ninguém entendeu completamente.</p>
+
+      <div class="dialogue">— Como você aprendeu a dançar assim? — ela perguntou.</div>
+
+      <div class="dialogue">— Doze anos de lições — ele disse, com um tom seco. — Minha professora era uma mulher de oitenta anos com um indicador de aço. Cada erro era um toque. Aprendi rápido.</div>
+
+      <p>Ela riu — novamente aquela risada verdadeira, incontrolável, que saía pelo nariz e que era completamente inapropriada.</p>
+
+      <div class="dialogue">— Você está rindo da minha tragédia — disse ele, mas estava sorrindo.</div>
+
+      <div class="dialogue">— Estou rindo com carinho — ela disse, enxugando o canto do olho. — É diferente.</div>
+
+      <p>Ele ficou olhando para ela por um momento, com aquela expressão que ela tinha começado a chamar, no silêncio dos seus próprios pensamentos, de <em>o olhar</em>. O olhar que ele tinha quando estava vendo mais do que o que estava em cima da mesa.</p>
+
+      <div class="dialogue">— Seraphine — ele disse, e o nome dela na voz dele continuava tendo aquele peso. — Pode me dizer uma coisa honesta?</div>
+
+      <div class="dialogue">— Depende da coisa.</div>
+
+      <div class="dialogue">— O que acontece depois que meu pai e o seu chegarem a um acordo? — ele perguntou. — Com as negociações, quero dizer. Politicamente.</div>
+
+      <p>Era uma pergunta de duas camadas, e ambos sabiam disso. A camada política, que era simples: as negociações comerciais chegariam a um termo, as delegações partiriam, a vida continuaria nos seus trilhos. E a camada de baixo, a que nenhum dos dois tinha nomeado ainda mas que pulsava em cada noite naquele jardim.</p>
+
+      <div class="dialogue">— Cada um volta para o seu reino — ela disse, com a voz neutra que havia aprendido a usar quando precisava dizer coisas que doíam. — E Lunaris e Selenne mantêm relações diplomáticas cordiais, como sempre.</div>
+
+      <div class="dialogue">— Cordiais — ele repetiu, com a mesma entonação que ela havia usado, e havia ironia nele mas havia também algo mais.</div>
+
+      <div class="dialogue">— Arthur...<br>— Eu sei — disse ele, rápido, antes que ela terminasse. — Eu sei o que são as regras. Sei quem você é e quem eu sou e o que isso significa. — Fez uma pausa. — Só estava perguntando o que <em>você</em> acha que acontece. Não o protocolo. Você.</div>
+
+      <p>Seraphine ficou olhando para as flores lunares. Abertas, brancas, completamente indiferentes às complicações humanas.</p>
+
+      <div class="dialogue">— Acho — disse ela, devagar — que algumas coisas são mais complicadas quando você decide que importam.</div>
+
+      <p>Ele não disse nada. Mas ficou olhando para ela por um longo tempo, e quando ela finalmente virou a cabeça para encontrar os seus olhos, havia neles algo que ela reconheceu porque era o mesmo que sentia: uma espécie de determinação quieta, aquele tipo que não anuncia nada mas que não vai embora.</p>
+    </div>
+    <div class="chapter-nav">
+      <button class="chapter-nav-btn" onclick="openChapter(2)">← Anterior</button>
+      <span class="chapter-counter"><a class="toc-link" onclick="showTOC()">Sumário</a></span>
+      <button class="chapter-nav-btn" onclick="openChapter(4)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- CAPÍTULO IV -->
+  <div class="chapter" id="chapter-4">
+    <div class="chapter-header">
+      <span class="chapter-number">Capítulo IV</span>
+      <h2 class="chapter-title">Entre o Dever e o Desejo</h2>
+      <p class="chapter-subtitle">O preço de cada escolha</p>
+    </div>
+    <div class="chapter-ornament">
+      <div class="chapter-ornament-line"></div>
+      ✦
+      <div class="chapter-ornament-line right"></div>
+    </div>
+    <div class="page">
+      <p>Foi na manhã seguinte ao baile que a Condessa Mirabel pediu uma audiência com Seraphine.</p>
+
+      <p>Era cedo demais para visitas — o sol mal havia tocado os píncaros das torres do palácio — e o simples fato de a condessa ter pedido a audiência a essa hora era, em si mesmo, uma mensagem. A Condessa Mirabel nunca desperdiçava gestos. Cada detalhe era calculado, cada timing era intencional.</p>
+
+      <div class="dialogue">— Alteza — disse ela, depois das formalidades de praxe, sentada numa das cadeiras do gabinete de Seraphine com a postura de quem tem autoridade mas sabe como não parecer que está exercendo ela. — Estou preocupada.</div>
+
+      <div class="dialogue">— Isso já aconteceu antes — disse Seraphine, com o tom neutro. — O que o preocupa desta vez?</div>
+
+      <div class="dialogue">— O Príncipe Arthur de Selenne — disse a condessa, e fez uma pausa que era desnecessária para alguém que já sabia o que queria dizer; era uma pausa para que Seraphine tivesse tempo de reagir, e Seraphine teve o orgulho de não reagir. — Você dançou com ele ontem.</div>
+
+      <div class="dialogue">— Dancei com seis pessoas ontem. O protocolo exige.</div>
+
+      <div class="dialogue">— Com cinco delas você dançou como uma princesa dança com representantes diplomáticos. Com ele você dançou como... — a condessa escolheu a palavra com cuidado — como uma jovem de dezoito anos.</div>
+
+      <p>O silêncio que se seguiu foi o tipo que tem dentes.</p>
+
+      <div class="dialogue">— O que exatamente a senhora está me dizendo, Condessa?</div>
+
+      <div class="dialogue">— Estou dizendo — disse Mirabel, com uma gentileza que não era gentileza — que a princesa herdeira de Lunaris está numa posição muito delicada. As negociações com Selenne são frágeis. O Barão Mervant tem propostas no seu feitor que estão sendo consideradas pelo Rei, seu pai. E o segundo filho do Rei de Selenne é... charmoso, certamente. Inteligente, pelas informações que tenho. Mas é o segundo filho, Alteza. Sem herança, sem território, com o futuro que o irmão mais velho não precisar. Não é uma aliança que beneficia Lunaris.</div>
+
+      <p>Seraphine ficou de pé, o que na linguagem não verbal da corte era uma declaração: esta audiência está chegando ao fim.</p>
+
+      <div class="dialogue">— Agradeço a preocupação da Condessa — ela disse, com cada sílaba colocada com precisão — e asseguro que minhas ações têm sido, como sempre, inteiramente dentro do protocolo e das boas maneiras. Se isso mudasse, a senhora seria a primeira a saber.</div>
+
+      <p>Mirabel saiu. Mas havia deixado algo para trás — aquele resíduo específico de conversas que te fazem questionar suas próprias motivações, que plantam dúvidas em coisas onde antes havia apenas clareza.</p>
+
+      <p>Seraphine ficou sentada no gabinete por um longo tempo depois que a condessa foi embora, com os olhos na janela e o jardim lá fora ainda coberto pela sombra da manhã cedo. E pensou, com uma honestidade que às vezes a assustava em si mesma: o que é isso? O que é Arthur Archibald para mim depois de oito noites e algumas conversas?</p>
+
+      <p>A resposta honesta era: alguém que entendia. Alguém que fazia perguntas de verdade e ouvia as respostas de verdade. Alguém que a fazia rir com a risada errada, que florescia à noite como as flores do jardim, que carregava seu próprio peso pesado com uma leveza que ela reconhecia como esforço.</p>
+
+      <p>A resposta política era: um segundo filho sem herança de um reino com quem o seu próprio estava negociando acordos frágeis.</p>
+
+      <p>E as duas respostas eram verdade, e isso era exatamente o problema.</p>
+
+      <p>Naquela tarde, Arthur a encontrou nos corredores do palácio — não por acidente; ela suspeitou que ele havia posicionado o encontro, o que era simultaneamente irritante e encantador. Ele caminhou ao lado dela por um trecho do corredor leste, a uma distância perfeitamente adequada, com um guarda a dez passos atrás.</p>
+
+      <div class="dialogue">— Você está diferente hoje — ele disse, baixo.</div>
+
+      <div class="dialogue">— Estou igual — ela disse.</div>
+
+      <div class="dialogue">— Seraphine.</div>
+
+      <p>Ela parou. Virou-se levemente para ele, mantendo a face externa de cortesia social.</p>
+
+      <div class="dialogue">— A Condessa Mirabel me visitou hoje de manhã — ela disse, igualmente baixo. — Sobre você.</div>
+
+      <p>O maxilar dele se firme levemente. Ela notou.</p>
+
+      <div class="dialogue">— E o que a condessa disse?</div>
+
+      <div class="dialogue">— O que eu já sabia — disse ela. — Que você é o segundo filho e que eu sou a princesa herdeira de Lunaris e que isso tem implicações.</div>
+
+      <div class="dialogue">— Implicações — ele repetiu, com o tom que ela havia aprendido que significava que estava irritado mas estava controlando. — É assim que você chama?</div>
+
+      <div class="dialogue">— É assim que o mundo chama — ela disse, e havia algo de cansado na sua voz. — O que eu chamo não importa.</div>
+
+      <p>Ele ficou olhando para ela por um momento que foi desconfortavelmente longo para um corredor com um guarda a dez passos.</p>
+
+      <div class="dialogue">— Importa — disse ele, firme, com a teimosia que ela só estava começando a conhecer mas que já reconhecia como parte intrínseca do que ele era. — Para mim importa.</div>
+
+      <p>E então o guarda tossiu — sutilmente, diplomaticamente, o tipo de tosse que era um lembrete de que havia um guarda a dez passos — e ambos continuaram caminhando, voltando para as suas respectivas direções.</p>
+
+      <div class="highlight">
+        <p>Mas aquela frase ficou com ela durante o resto do dia. <em>Para mim importa.</em> Três palavras ditas num corredor com um guarda presente, com toda a brevidade de algo que não deveria ter sido dito e que foi dito mesmo assim.</p>
+      </div>
+
+      <p>Naquela noite no jardim, havia algo tenso e gentil ao mesmo tempo entre eles. Sentaram-se na fonte como de costume, mas a conversa não veio com a facilidade das outras vezes — havia um peso novo, aquele peso de coisas ditas e não completamente processadas.</p>
+
+      <p>Foi Arthur que quebrou o silêncio.</p>
+
+      <div class="dialogue">— Posso fazer uma pergunta imprudente?</div>
+
+      <div class="dialogue">— Suas perguntas geralmente são — disse ela.</div>
+
+      <div class="dialogue">— E você geralmente as responde mesmo assim.</div>
+
+      <p>Ela olhou para ele. A lua estava baixa naquela noite, e a luz caía de uma certa forma que fazia os ângulos do rosto dele ficarem mais nítidos — a curva da mandíbula, a intensidade dos olhos escuros.</p>
+
+      <div class="dialogue">— Pergunte — ela disse.</div>
+
+      <div class="dialogue">— Se você não fosse princesa — disse ele, devagar — e eu não fosse filho de rei, e não houvesse acordos comerciais e implicações e condessas de manhã cedo... o que seria isso aqui?</div>
+
+      <p>Seraphine ficou olhando para as flores lunares por um longo momento.</p>
+
+      <div class="dialogue">— Seria mais simples — ela disse, finalmente.</div>
+
+      <div class="dialogue">— Mas seria o mesmo?</div>
+
+      <p>Ela virou o rosto para olhá-lo. E havia algo na expressão dele — aquela combinação específica de intensidade e vulnerabilidade que ele geralmente escondia embaixo do humor — que a fez ser mais honesta do que a prudência recomendaria.</p>
+
+      <div class="dialogue">— Seria o mesmo — ela disse. — Só não teria esse peso.</div>
+
+      <p>Algo no rosto de Arthur se abriu e se fechou em rápida sucessão — como uma porta que foi empurrada e depois contida. Ele estava aprendendo, ela percebeu, que as coisas que ele sentia eram difíceis de deixar sair. Havia uma teimosia nele que não era cruelmente mas era absolutamente real: a dificuldade de ceder o controle sobre a própria expressão, de deixar que o que sentia aparecesse no rosto sem filtro.</p>
+
+      <p>Mas desta vez algo passou.</p>
+
+      <p>Ele levantou a mão e, muito devagar, com a delicadeza de alguém que não tem certeza de ter permissão mas age de qualquer forma, colocou os dedos sobre os dela onde ela apoiava a mão na pedra da fonte.</p>
+
+      <p>Não foi um aperto. Não foi um gesto dramático. Foi apenas o toque — o calor dos dedos sobre os seus, a pressão gentil de algo que estava sendo dito sem palavras.</p>
+
+      <p>Seraphine olhou para as mãos e depois para ele. E não tirou a mão.</p>
+
+      <p>Eles ficaram assim por um longo tempo — a mão dele sobre a dela, a lua descendo no céu, as flores fechando suas pétalas uma por uma enquanto a madrugada avançava — e nenhum dos dois disse nada, porque não havia nada a dizer que as mãos não estivessem dizendo melhor.</p>
+    </div>
+    <div class="chapter-nav">
+      <button class="chapter-nav-btn" onclick="openChapter(3)">← Anterior</button>
+      <span class="chapter-counter"><a class="toc-link" onclick="showTOC()">Sumário</a></span>
+      <button class="chapter-nav-btn" onclick="openChapter(5)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- CAPÍTULO V -->
+  <div class="chapter" id="chapter-5">
+    <div class="chapter-header">
+      <span class="chapter-number">Capítulo V</span>
+      <h2 class="chapter-title">O Quase-Beijo sob a Chuva</h2>
+      <p class="chapter-subtitle">Algumas coisas acontecem no milímetro errado</p>
+    </div>
+    <div class="chapter-ornament">
+      <div class="chapter-ornament-line"></div>
+      ✦
+      <div class="chapter-ornament-line right"></div>
+    </div>
+    <div class="page">
+      <p>A chuva chegou sem aviso na décima segunda noite.</p>
+
+      <p>Seraphine já estava no jardim quando o céu abriu — não a chuva gentil de primavera que às vezes perfumava as flores lunares, mas a chuva de verão que cai em diagonal e encharca tudo em segundos. Ela ficou parada um momento, estúpida de surpresa, e então começou a caminhar rapidamente para o gazebo de pedra no canto sul do jardim — aquele que ninguém usava mais desde que a hera havia crescido pela metade das colunas.</p>
+
+      <p>Chegou lá encharcada. Deu meia-volta para olhar para o jardim e viu Arthur surgindo pela entrada — igualmente encharcado, os cabelos escuros colados à testa e ao pescoço, rindo baixinho para si mesmo com a expressão de quem reconhece que a situação é absurda e resolve aceitar isso.</p>
+
+      <div class="dialogue">— O céu de Lunaris — disse ele, chegando ao gazebo — tem um senso de oportunidade duvidoso.</div>
+
+      <div class="dialogue">— O clima aqui é assim em julho — ela disse, torcendo a ponta do próprio cabelo. — Devia ter verificado.</div>
+
+      <div class="dialogue">— Nenhum de nós verificou — disse ele, com aquele tom que misturava autocrítica e humor numa proporção impossível de determinar.</div>
+
+      <p>O gazebo era pequeno — talvez quatro metros de diâmetro — e a hera havia coberto boa parte das paredes de pedra, criando uma espécie de câmara verde e úmida que cheirava a terra molhada e a algo mais antigo, mais vegetal. Havia um banco de pedra ao redor da parede interna, coberto de musgo nas bordas. A chuva caía do lado de fora em cortinas, barulhenta e total.</p>
+
+      <p>Estavam a menos de um metro um do outro.</p>
+
+      <p>Arthur estava com os cotovelos apoiados na parede, olhando para a chuva, a camisa branca encharcada e semitransparente. Seraphine se sentou no banco de pedra com as pernas cruzadas, torcendo mais a barra do vestido. A luz era apenas a que entrava da lua através da chuva — difusa, prateada, inconstante.</p>
+
+      <div class="dialogue">— Você está com frio? — ele perguntou, sem olhar para ela.</div>
+
+      <div class="dialogue">— Um pouco. — Pausa. — Você?</div>
+
+      <div class="dialogue">— Um pouco — ele disse.</div>
+
+      <p>Silêncio. A chuva. A proximidade.</p>
+
+      <p>Ele se virou e foi se sentar no banco ao lado dela — não no outro extremo, não a uma distância de protocolo. Perto. Não tanto que os corpos se tocassem, mas perto o bastante para que o calor residual fosse perceptível, para que ela pudesse ver as gotas de chuva ainda escorregando pelo ângulo da mandíbula dele.</p>
+
+      <div class="dialogue">— Seraphine — disse ele.</div>
+
+      <div class="dialogue">— Arthur.</div>
+
+      <div class="dialogue">— Eu preciso te dizer uma coisa.</div>
+
+      <p>Ela esperou. A chuva.</p>
+
+      <div class="dialogue">— Eu não vim para Lunaris esperando isso — disse ele, com a voz que tinha quando estava sendo completamente sério, o tom diferente de quando estava sendo engraçado para se proteger. — Vim para acompanhar meu pai numa negociação diplomática e ver o quanto as paredes dos palácios estrangeiros se parecem com as paredes dos palácios de casa. — Uma pausa breve. — E então você apareceu descalça com sapatos de gala na mão, e...</div>
+
+      <p>Ele parou. Aquela contenção que ela conhecia.</p>
+
+      <div class="dialogue">— E? — ela disse, mais baixo.</div>
+
+      <div class="dialogue">— E eu percebi que havia uma pessoa embaixo da coroa — disse ele. — Uma pessoa real. — Virou o rosto para olhá-la, e os olhos castanho-escuros estavam com aquela intensidade que ela havia tentado e falhado em catalogar. — E eu não consigo parar de querer conhecer essa pessoa.</div>
+
+      <p>Seraphine sentiu algo se mover no peito — não metaforicamente, quase fisicamente, como quando algo preso por muito tempo finalmente encontra espaço para respirar.</p>
+
+      <div class="dialogue">— Arthur — disse ela, e o nome saiu com uma tonalidade que ela não planejou — você sabe o que isso significa. Você mesmo disse que sabe as regras.</div>
+
+      <div class="dialogue">— Sei — disse ele. — E continuo aqui mesmo assim. — Uma pausa. — O que isso te diz?</div>
+
+      <p>Ela ficou olhando para ele por um momento longo demais para ser confortável e curto demais para ser suficiente. A chuva estava diminuindo — ou talvez ela simplesmente tivesse parado de ouvi-la.</p>
+
+      <p>Seraphine levantou a mão e, com a mesma delicadeza com que ele havia colocado os dedos sobre os seus duas noites antes, colocou a palma levemente contra a lateral do rosto dele — a bochecha, o ponto onde a mandíbula curva para cima. Sentiu o calor da pele, a aspereza levíssima de barba incipiente.</p>
+
+      <p>Ele ficou completamente imóvel por um segundo, como um animal que não quer assustar algo que finalmente se aproximou.</p>
+
+      <p>E então se inclinou, devagar — muito devagar — com os olhos nos olhos dela, pedindo permissão sem palavras.</p>
+
+      <p>Ela inclinou-se também.</p>
+
+      <p>A distância entre eles diminuiu para centímetros. Para milímetros. Para o espaço entre um segundo e o próximo, aquele espaço que tem o peso de tudo que está prestes a mudar.</p>
+
+      <p>E então, do palácio, o sino da guarda tocou.</p>
+
+      <p>Não três vezes — cinco. Cinco badaladas. O código de emergência.</p>
+
+      <p>Ambos se afastaram ao mesmo tempo. Os olhos de Arthur foram para a direção do palácio, e a expressão que cruzou o rosto dele foi aquela que ela conhecia como a versão-dever dele, a máscara que ele colocava quando precisava ser o príncipe e não apenas Arthur.</p>
+
+      <div class="dialogue">— Você precisa ir — disse ele.</div>
+
+      <div class="dialogue">— Eu sei — disse ela, já levantando.</div>
+
+      <p>Ela foi. Correu pelo jardim ainda com a chuva fina, pelos corredores do palácio em ebulição — havia um incidente nas negociações, um documento vazado, uma acusação —, e chegou ao gabinete do seu pai com o vestido encharcado e o coração batendo mais forte do que o necessário para a corrida.</p>
+
+      <div class="highlight">
+        <p>E o espaço entre a boca dela e a boca dele — aquele milímetro que havia ficado em aberto, aquele beijo que existia apenas no potencial — ficou com ela durante dias. Era impossível não pensar que as coisas que não acontecem às vezes pesam mais do que as que acontecem.</p>
+      </div>
+    </div>
+    <div class="chapter-nav">
+      <button class="chapter-nav-btn" onclick="openChapter(4)">← Anterior</button>
+      <span class="chapter-counter"><a class="toc-link" onclick="showTOC()">Sumário</a></span>
+      <button class="chapter-nav-btn" onclick="openChapter(6)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- CAPÍTULO VI -->
+  <div class="chapter" id="chapter-6">
+    <div class="chapter-header">
+      <span class="chapter-number">Capítulo VI</span>
+      <h2 class="chapter-title">Ciúme é um Veneno de Sabor Doce</h2>
+      <p class="chapter-subtitle">Quando vemos o que não queríamos ver</p>
+    </div>
+    <div class="chapter-ornament">
+      <div class="chapter-ornament-line"></div>
+      ✦
+      <div class="chapter-ornament-line right"></div>
+    </div>
+    <div class="page">
+      <p>O documento vazado havia acelerado as negociações de uma forma que ninguém havia previsto: em vez de complicá-las ainda mais, como Seraphine havia esperado, havia forçado ambos os lados a mostrar as cartas mais cedo do que planejavam. O acordo comercial entre Lunaris e Selenne seria assinado em dez dias — o que significava que a delegação partiria em onze.</p>
+
+      <p>Onze dias.</p>
+
+      <p>A contagem regressiva fez algo em Seraphine que ela não estava preparada para sentir: uma urgência quieta, aquele tipo de pressão que Arthur Archibald não é pânico mas é muito consciente de si mesma. Havia coisas que precisavam ser ditas. Havia um espaço entre as bocas deles que ainda estava em aberto. E havia, crescendo dentro dela com uma clareza que era quase irritante em sua precisão, a certeza de que o que sentia por  era real o suficiente para ser levado a sério.</p>
+
+      <p>Mas foi exatamente nessa semana que o destino — aquele narrador implacável — decidiu introduzir uma complicação.</p>
+
+      <p>A Lady Essentra de Vorn chegou a Lunaris no quinto dia antes do fim da delegação.</p>
+
+      <p>Era a filha do Duque de Vorn — a mesma Vorn que estava aumentando tropas nas fronteiras —, enviada numa missão de "boa vontade" que ninguém na corte acreditava ser apenas isso. Era bela da forma que as damas do norte eram belas: alta, pálida, com cabelos vermelhos e uma forma de entrar num cômodo que sugeria que ela sabia exatamente o efeito que causava.</p>
+
+      <p>Seraphine a conheceu no banquete de boas-vindas e sentiu, antes de qualquer outra coisa, uma admiração involuntária e levemente irritante. Essentra era inteligente — isso ficou claro em dez minutos de conversa — e tinha aquele charme específico das pessoas que não estão tentando agradar todo mundo e exatamente por isso agradam todo mundo.</p>
+
+      <p>E então Seraphine viu Essentra atravessar o salão em direção ao grupo onde Arthur estava, e viu a forma como ele se virou para ela, e viu o sorriso que ele deu — não o sorriso dos olhos que era para Seraphine, mas um sorriso social, educado — e ainda assim sentiu algo se contrair dentro do peito com uma especificidade que era completamente nova.</p>
+
+      <p>Era ciúme. Seraphine reconheceu-o com a precisão desagradável de quem estava vendo um sentimento pela primeira vez e não estava feliz com o encontro.</p>
+
+      <p>Durante o jantar, Essentra sentou a dois lugares de Arthur. Seraphine ficou do outro lado da mesa, seis lugares distante, e teve uma visão perfeita de como a conversa entre eles se desenrolou — animada, inteligente, com aquele padrão específico de duas pessoas que estão se descobrindo interessantes uma para a outra.</p>
+
+      <p>Ela comeu o peixe com um cuidado desnecessário.</p>
+
+      <p>Naquela noite, no jardim, Arthur chegou mais tarde do que o usual. Seraphine estava sentada na fonte com as mãos no colo e a expressão que ela mesma reconhecia como o que as damas chamavam, nas costas dela, de <em>a face de pedra</em>.</p>
+
+      <div class="dialogue">— Você está bem? — ele perguntou, sentando-se.</div>
+
+      <div class="dialogue">— Perfeitamente bem — disse ela, com toda a neutralidade de que era capaz.</div>
+
+      <p>Arthur ficou quieto por um momento. Ela o via, da visão periférica, inclinando levemente a cabeça — aquele gesto de quem está tentando ler algo que não está sendo mostrado claramente.</p>
+
+      <div class="dialogue">— Vi que você conheceu Lady Essentra hoje.</div>
+
+      <div class="dialogue">— Vi que você também conheceu — disse ela, e a neutralidade escorregou levemente.</div>
+
+      <p>Silêncio.</p>
+
+      <p>E então, para sua indignação, ela ouviu Arthur fazer aquele som — aquele início de risada baixa, controlada, o som de alguém que está tentando não rir e não está conseguindo completamente.</p>
+
+      <div class="dialogue">— Seraphine — disse ele, com uma ternura na voz que ela encontrou simultaneamente adorável e exasperante. — Você está com ciúme?</div>
+
+      <div class="dialogue">— Não estou com ciúme — disse ela, com precisão. — Estou observando.</div>
+
+      <div class="dialogue">— Você está observando o peixe do seu prato fazer o quê, exatamente?</div>
+
+      <div class="dialogue">— Arthur.</div>
+
+      <div class="dialogue">— Seraphine — disse ele, e desta vez havia algo diferente na voz — algo mais firme e mais quente ao mesmo tempo. — Essentra de Vorn é política com cabelo vermelho. Meu pai vai querer conversar com ela amanhã sobre as fronteiras do Areth. Ela não é... ela não é nada comparado ao que... — ele parou, e ela sentiu o esforço nessa pausa, o trabalho de deixar sair algo que ele geralmente guardava. — Para mim só existe uma pessoa nesse jardim à noite.</div>
+
+      <p>Seraphine finalmente virou o rosto para olhá-lo. E havia nele uma expressão que ela nunca tinha visto completamente antes — não o humor, não a contenção, não a versão-dever. Era algo mais próximo do que estava por baixo de tudo isso, e era vulnerável e firme em igual medida.</p>
+
+      <div class="dialogue">— Você tem dificuldade em dizer o que sente — disse ela.</div>
+
+      <div class="dialogue">— Eu sei — disse ele, sem desviar o olhar. — Estou tentando.</div>
+
+      <div class="highlight">
+        <p>E havia nessa afirmação — simples, sem ornamentos, completamente despida da ironia que ele geralmente usava como escudo — uma honestidade que valia mais do que qualquer declaração elaborada.</p>
+      </div>
+
+      <p>Ela não respondeu com palavras. Em vez disso, moveu-se levemente na borda da fonte — apenas alguns centímetros — até que o ombro dela tocasse o ombro dele. E ficou assim.</p>
+
+      <p>E ele ficou assim.</p>
+
+      <p>E por um longo tempo nenhum dos dois disse nada, porque o toque dos ombros num jardim silencioso às três da madrugada estava dizendo tudo que precisava ser dito.</p>
+
+      <p>Mas os dias seguintes trouxeram algo que Seraphine não havia antecipado: Lady Essentra era perspicaz. E perspicaz demais para não notar.</p>
+
+      <p>Foi numa tarde de biblioteca — Seraphine tinha o hábito de trabalhar na biblioteca real nas tardes de quinta-feira, lendo os relatórios das províncias — quando Essentra apareceu, com um livro que claramente não precisava buscar, e se sentou numa cadeira próxima.</p>
+
+      <div class="dialogue">— A princesa me permite? — disse ela, com um sorriso que era genuíno o suficiente para não ser totalmente desconfiável.</div>
+
+      <div class="dialogue">— Seja bem-vinda — disse Seraphine, com o tom correto.</div>
+
+      <p>Ficaram em silêncio por um tempo. Folhas virando. Luz de tarde entrando pelas janelas altas.</p>
+
+      <div class="dialogue">— O Príncipe Arthur — disse Essentra, eventualmente, com uma casualidade de quem está testando a temperatura da água — parece ser um homem interessante.</div>
+
+      <div class="dialogue">— É um representante competente do reino de Selenne — disse Seraphine, com a voz neutra.</div>
+
+      <div class="dialogue">— Hm — disse Essentra. E então, com uma suavidade que tinha algo de espinho: — E a princesa e ele parecem se entender bem, pela forma como se olham nos corredores.</div>
+
+      <p>Seraphine baixou o relatório e encarou Essentra com a expressão que havia aprendido especificamente para situações como esta: uma compostura total que era ao mesmo tempo amável e absolutamente impenetrável.</p>
+
+      <div class="dialogue">— A Lady Essentra é muito observadora — disse ela.</div>
+
+      <div class="dialogue">— A Lady Essentra — disse Essentra, com um sorriso que tinha algo de respeito genuíno — é também filha de um duque e entende o que é ser visto o tempo todo. — Uma pausa. — Não estou aqui para criar problemas para a Alteza. Estou aqui porque meu pai precisa de um acordo com Lunaris sobre as fronteiras, e porque Selenne é um aliado importante demais para ser destabilizado por mal-entendidos.</div>
+
+      <p>Seraphine a olhou por um longo momento.</p>
+
+      <div class="dialogue">— O que exatamente a Lady está me dizendo?</div>
+
+      <div class="dialogue">— Estou dizendo — disse Essentra, com uma franqueza que Seraphine reconheceu e respeitou — que o Rei de Selenne tem planos para o príncipe Arthur. Um casamento. Com uma duquesa de Vorn. — Pausa. — A proposta foi feita há três semanas, antes de chegarem a Lunaris. O príncipe ainda não deu uma resposta, pelo que sei.</div>
+
+      <p>O relatório de Seraphine ficou perfeitamente imóvel em suas mãos.</p>
+
+      <div class="dialogue">— Por que me diz isso?</div>
+
+      <div class="dialogue">— Porque — disse Essentra, com algo de finalmente honesto na voz — acho que a Alteza merece saber. E porque acho que o príncipe não vai conseguir dizer.</div>
+
+      <p>Essentra se levantou, fez uma reverência correta, e saiu.</p>
+
+      <p>E Seraphine ficou sozinha na biblioteca com o relatório na mão e aquela informação no peito — pesada, nova, com arestas — e sentiu, pela primeira vez em semanas, o peso completo da coroa voltando.</p>
+    </div>
+    <div class="chapter-nav">
+      <button class="chapter-nav-btn" onclick="openChapter(5)">← Anterior</button>
+      <span class="chapter-counter"><a class="toc-link" onclick="showTOC()">Sumário</a></span>
+      <button class="chapter-nav-btn" onclick="openChapter(7)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- CAPÍTULO VII -->
+  <div class="chapter" id="chapter-7">
+    <div class="chapter-header">
+      <span class="chapter-number">Capítulo VII</span>
+      <h2 class="chapter-title">A Grande Traição</h2>
+      <p class="chapter-subtitle">O que o silêncio pode destruir</p>
+    </div>
+    <div class="chapter-ornament">
+      <div class="chapter-ornament-line"></div>
+      ✦
+      <div class="chapter-ornament-line right"></div>
+    </div>
+    <div class="page">
+      <p>Seraphine passou as horas seguintes à conversa com Essentra fazendo o que havia aprendido a fazer com as coisas que a destabilizavam: colocou-as num compartimento mental fechado, terminou o que precisava ser terminado, cumpriu os compromissos do resto da tarde com a precisão de um relógio bem regulado.</p>
+
+      <p>E então, ànoite, foi ao jardim com a intenção de perguntar diretamente.</p>
+
+      <p>Arthur já estava lá quando ela chegou — na fonte, como de costume — mas havia algo diferente nele naquela noite. Uma tensão nos ombros, aquele tipo que ele carregava quando havia algo que não estava dizendo. Ela o conhecia o suficiente para ver isso agora.</p>
+
+      <div class="dialogue">— Você precisa me dizer algo — disse ela, ainda de pé na entrada do jardim.</div>
+
+      <p>Ele levantou a cabeça. Os olhos dele encontraram os dela, e por um segundo ela viu algo neles que era quase alívio — como se estivesse esperando por esta conversa e ao mesmo tempo temendo ela.</p>
+
+      <div class="dialogue">— Sim — disse ele.</div>
+
+      <div class="dialogue">— Sobre um casamento — disse ela. Não como acusação. Como declaração de fato.</div>
+
+      <p>Algo fechou no rosto dele. A teimosia que ela conhecia — aquela que o fazia não recuar de posições, mesmo quando as posições eram indefensáveis — apareceu.</p>
+
+      <div class="dialogue">— Como você soube?</div>
+
+      <div class="dialogue">— Não importa como. — Ela foi se sentar na fonte, à distância, com os braços cruzados — não em defensividade, mas em contenção. — Importa que você não disse.</div>
+
+      <div class="dialogue">— É uma proposta — disse ele. — Não é um acordo. Ainda não decidi.</div>
+
+      <div class="dialogue">— Arthur. — Ela o olhou. — Três semanas. Você estava aqui há três semanas sabendo disso e não disse.</div>
+
+      <div class="dialogue">— Porque quando vim aqui não havia você — ele disse, e a voz tinha aquela tensão de algo que está sendo mantido no lugar à força. — E então você existiu e tudo ficou mais complicado e eu não sabia como...</div>
+
+      <div class="dialogue">— Como dizer a verdade? — disse ela, e havia algo cortante nas palavras que ela não havia planejado. — Todas essas noites. Toda essa... — ela parou, procurou a palavra que não fosse demais e fosse exata. — Toda essa construção entre nós, e havia um segredo no meio.</div>
+
+      <div class="dialogue">— Seraphine, ouça...</div>
+
+      <div class="dialogue">— Eu ouço — disse ela. — Estou ouvindo. — Uma pausa. — O que quero que você entenda é que o problema não é a proposta de casamento. Eu não sou ingênua sobre o que somos. Sou a princesa herdeira de Lunaris. Você é o segundo filho de Selenne. Casamentos arranjados são parte da nossa realidade. — Ela respirou. — O problema é que você sabia de algo que mudava o que estava acontecendo aqui e escolheu não dizer. E isso... isso é diferente.</div>
+
+      <p>Ele ficou de pé, e havia na postura algo que ela reconhecia como aquela impulsividade que era um dos seus defeitos — a vontade de reagir imediatamente, de resolver pela ação em vez de pela pausa.</p>
+
+      <div class="dialogue">— Não disse porque não queria que acabasse — disse ele, com a voz mais alta do que costumava ser no jardim. — Não disse porque cada vez que tentava encontrar o momento certo você existia ali do meu lado e eu não conseguia fazer isso desaparecer com uma informação que eu mesmo ainda estava tentando entender.</div>
+
+      <div class="dialogue">— E você acha que não dizer foi melhor?</div>
+
+      <div class="dialogue">— Não — disse ele, e a palavra saiu curta e honesta, sem enfeite. — Não acho. Sei que foi errado. — Ele ficou olhando para ela. — Mas se eu tivesse dito na primeira noite você teria ido embora e não teríamos tido nada disso.</div>
+
+      <div class="dialogue">— E seria diferente de agora, como?</div>
+
+      <p>A pergunta caiu entre eles como uma pedra num lago. As ondas se expandiram no silêncio.</p>
+
+      <p>Arthur abriu a boca e a fechou. Ela via o trabalho nele — a luta entre a teimosia e a honestidade, entre o impulso de defender sua posição e o reconhecimento de que havia uma posição que não era defensável.</p>
+
+      <div class="dialogue">— Seria diferente porque agora eu sei o que perco — disse ele, finalmente, com uma voz que havia ficado muito quieta. — Na primeira noite eu não sabia ainda.</div>
+
+      <p>E havia algo nessas palavras — a admissão dentro delas, a vulnerabilidade que era tão diferente do Arthur que se protegia com o humor e a contenção — que chegou ao lugar onde Seraphine guardava as coisas que a machucavam.</p>
+
+      <p>Ela estava furiosa. E ao mesmo tempo estava sentindo aquela maldita ternura que ele conseguia provocar nela mesmo quando era a última coisa que ela queria sentir.</p>
+
+      <div class="dialogue">— Preciso de tempo — disse ela, de pé. — Para pensar.</div>
+
+      <div class="dialogue">— Eu entendo.</div>
+
+      <div class="dialogue">— Não venha ao jardim amanhã.</div>
+
+      <p>Ela viu o impacto disso nele — não dramático, não uma explosão, mas algo que chegou e se assentou. Ele assentiu, com aquele movimento que era concordância e luto ao mesmo tempo.</p>
+
+      <p>Seraphine saiu do jardim.</p>
+
+      <p>E foi ao quarto, e ficou de pé na janela por uma hora olhando para a noite, e sentiu tudo — a raiva justa, a tristeza que não havia pedido, a ternura que persistia mesmo assim, e por baixo de tudo, crescendo com uma clareza cada vez mais inegável, o amor. Aquela coisa específica que não é só afeição e não é só atração e não é só entendimento mútuo mas é as três coisas juntas e ainda algo mais, algo que não tem nome preciso mas que, quando chega, você reconhece com uma certeza que é quase inconfortável.</p>
+
+      <div class="highlight">
+        <p>Ela amava Arthur Archibald. Amava com a parte dela que nunca havia aprendido a fazer política — a parte que chorava por borboletas mortas na biblioteca às três da manhã, a parte que saía descalça para sentir a grama fria, a parte que florescia à noite como as flores do jardim.</p>
+      </div>
+
+      <p>E no dia seguinte, enquanto ela ainda estava decidindo o que fazer com isso, a delegação de Selenne anunciou que estava pronta para partir.</p>
+
+      <p>O acordo havia sido assinado cedo da manhã.</p>
+
+      <p>Partiriam em três dias.</p>
+
+      <p>E Seraphine ficou olhando para o anúncio com uma sensação de que o tempo havia acelerado de repente, de que havia algo que precisava ser resolvido antes que o relógio chegasse a zero — mas não sabia ainda o que era esse algo, não sabia se era confronto ou perdão ou despedida ou algo inteiramente diferente.</p>
+
+      <p>Ela foi ao jardim naquela noite.</p>
+
+      <p>Ele estava lá, apesar de ela ter dito que não viesse. E ela ficou na entrada por um momento, vendo-o sentado na fonte com os olhos no chão — não olhando para a lua, não com aquela postura de quem está fazendo paz com algo. Era a postura de alguém que está carregando algo pesado sem saber onde pousar.</p>
+
+      <div class="dialogue">— Eu disse para não vir — ela disse.</div>
+
+      <div class="dialogue">— Eu sei — disse ele, sem levantar a cabeça. — Vim mesmo assim. — Uma pausa. — Vou entender se você mandar embora.</div>
+
+      <p>Ela foi até a fonte. Não sentou — ficou de pé a alguns passos, os braços cruzados.</p>
+
+      <div class="dialogue">— A delegação parte em três dias — ela disse.</div>
+
+      <div class="dialogue">— Eu sei.</div>
+
+      <div class="dialogue">— E a proposta de casamento continua em aberto.</div>
+
+      <div class="dialogue">— Sim.</div>
+
+      <p>Seraphine respirou. O ar do jardim tinha aquele cheiro de flores lunares e noite úmida que ela havia começado a associar inteiramente com ele, e isso também era irritante.</p>
+
+      <div class="dialogue">— O que você quer, Arthur? — ela perguntou. — Não o que seu pai quer. Não o que é politicamente sensato. O que você quer?</div>
+
+      <p>Ele finalmente levantou a cabeça e a olhou. E havia naquele olhar uma exposição que ela nunca havia visto completamente nele — como se a contenção tivesse sido retirada toda de uma vez e o que estava por baixo fosse simplesmente real.</p>
+
+      <div class="dialogue">— Você — disse ele. — Eu quero você. Mas sei o que somos, e sei o que isso significa, e não tenho uma solução, Seraphine. Não tenho uma resposta limpa. Só tenho isto.</div>
+
+      <p>Ela o olhou por um longo tempo.</p>
+
+      <p>E então, porque não havia mais tempo para cuidado excessivo, porque a delegação partia em três dias e havia uma proposta de casamento em aberto e uma fissura entre eles que precisava de resposta — disse a coisa que havia passado a noite anterior não dizendo:</p>
+
+      <div class="dialogue">— Eu também quero você. E também não tenho uma solução. — Pausa. — Mas acho que precisamos de tempo para encontrar uma, e você está partindo em três dias.</div>
+
+      <div class="dialogue">— Então me dê tempo — disse ele, com uma urgência quieta. — Não décadas. Não um futuro que ninguém sabe o que é. Apenas — tempo. Para eu resolver o que precisa ser resolvido. Para você resolver o que precisa ser resolvido. E então...</div>
+
+      <div class="dialogue">— E então o quê?</div>
+
+      <p>Ele se levantou. E desta vez não havia contenção — veio até ela, ficou a uma distância de um passo, e os olhos castanho-escuros tinham aquela intensidade que ela havia tentado catalogar durante semanas sem nunca conseguir nome certo.</p>
+
+      <div class="dialogue">— E então eu volto — disse ele. — Se você quiser que eu volte.</div>
+
+      <p>Seraphine ficou olhando para ele, com o jardim em volta e as flores abrindo e a lua acima e tudo aquilo que havia começado numa noite descalça com sapatos na mão e que havia se tornando algo que ela não sabia mais como imaginar sem.</p>
+
+      <div class="dialogue">— Eu quero — disse ela.</div>
+
+      <p>E foi a segunda noite em que estiveram a milímetros um do outro — os olhos, a respiração, a intensidade de todo aquele silêncio convertido em proximidade — e desta vez não foi o sino que interrompeu.</p>
+
+      <p>Foi ela mesma que recuou.</p>
+
+      <div class="dialogue">— Não aqui — disse ela, com uma voz que tremia levemente e que ela decidiu não se envergonhar disso. — Não assim. Não quando você parte em três dias e ainda há coisas sem resposta.</div>
+
+      <p>Arthur fechou os olhos por um segundo. Quando abriu, havia algo de aquiescência — e algo de promessa.</p>
+
+      <div class="dialogue">— Tudo bem — disse ele. — Eu espero.</div>
+
+      <p>Mas na manhã seguinte, algo que nenhum deles havia previsto destruiu toda aquela frágil esperança.</p>
+
+      <p>O Rei de Lunaris convocou Seraphine para uma audiência de emergência. As negociações com Vorn haviam chegado a um ponto crítico — a ameaça militar era real, as tropas se movimentavam — e o Rei havia tomado uma decisão: para selar a paz, Seraphine seria prometida ao Duque Helden de Vorn. O mesmo Duque Helden que estava esperando uma resposta sobre a mão de uma duquesa de Vorn. A mesma proposta que havia sido feita ao Príncipe Arthur.</p>
+
+      <p>O Rei de Selenne, informado da situação, havia enviado uma mensagem: a proposta de casamento de Arthur com a duquesa de Vorn era retirada. Arthur, por sua vez, seria redirecionado para uma aliança diferente, com uma das filhas de um barão do leste.</p>
+
+      <p>Tudo havia sido decidido em uma manhã, enquanto eles ainda estavam tentando resolver o que havia acontecido no jardim.</p>
+
+      <p>Seraphine ouviu tudo isso com a face de pedra e o coração a um passo de se partir.</p>
+
+      <p>E quando a delegação de Selenne partiu dois dias depois — um dia antes do previsto, por conta de uma urgência que o Rei de Selenne alegou sem detalhar — Arthur e ela não tiveram mais do que o protocolo de despedida. Uma reverência. Um aperto de mão formal. Os olhos castanho-escuros dela nos âmbar dela por um momento que foi o mais longo e o mais curto ao mesmo tempo.</p>
+
+      <div class="dialogue">— Alteza — disse ele, com a voz do protocolo.</div>
+
+      <div class="dialogue">— Príncipe Arthur — disse ela, com a voz do protocolo.</div>
+
+      <p>E então ele foi embora.</p>
+
+      <p>E Seraphine ficou de pé no pátio de partida com a Condessa Mirabel ao lado e os conselheiros ao redor e o sol de verão batendo em tudo que havia, e sentiu o peso da coroa com uma clareza que era quase brutal em sua completude.</p>
+    </div>
+    <div class="chapter-nav">
+      <button class="chapter-nav-btn" onclick="openChapter(6)">← Anterior</button>
+      <span class="chapter-counter"><a class="toc-link" onclick="showTOC()">Sumário</a></span>
+      <button class="chapter-nav-btn" onclick="openChapter(8)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- CAPÍTULO VIII -->
+  <div class="chapter" id="chapter-8">
+    <div class="chapter-header">
+      <span class="chapter-number">Capítulo VIII</span>
+      <h2 class="chapter-title">O Inverno que Durou uma Eternidade</h2>
+      <p class="chapter-subtitle">Meses de silêncio e resistência</p>
+    </div>
+    <div class="chapter-ornament">
+      <div class="chapter-ornament-line"></div>
+      ✦
+      <div class="chapter-ornament-line right"></div>
+    </div>
+    <div class="page">
+      <p>Os meses que se seguiram foram os mais longos da vida de Seraphine — e ela havia passado por meses difíceis suficientes para ter uma escala de comparação.</p>
+
+      <p>Lunaris entrou no outono, depois no inverno, e ela trabalhou. Era o que havia para fazer: trabalhar. Aprender. Tornar-se o que o reino precisava que ela fosse. Havia negociações com Vorn — o prometimento ao Duque Helden havia sido suspenso por resistência inesperada, a sua própria, declarada numa audiência com o pai que custou três horas e um nível de tensão que nenhum dos dois havia experimentado antes. O Rei cedeu porque Seraphine apresentou alternativas políticas — ela havia passado duas semanas antes da audiência preparando alternativas, todas viáveis, todas mais inteligentes do que um casamento de conveniência com um homem que ela nunca havia conhecido.</p>
+
+      <p>O Rei concordou com as alternativas e olhou para ela com uma expressão que misturava orgulho e algo mais — um reconhecimento tardio de que a filha havia crescido mais do que ele havia acompanhado.</p>
+
+      <p>Mas a batalha política havia custado, e o que custou foi tempo e energia que ela havia tirado de outra coisa: de sentir. Porque sentir era um luxo para quando o trabalho estava feito, e o trabalho nunca estava completamente feito.</p>
+
+      <p>Sobre Arthur, havia apenas silêncio.</p>
+
+      <p>Não o silêncio dramático dos rompimentos, não o silêncio calculado da política. Era simplesmente a distância — dois reinos, cada um com seus próprios problemas, cada um com pessoas que não se comunicavam a não ser através de documentos oficiais que chegavam com o brasão de Selenne e tratavam de taxas e fronteiras e nada mais.</p>
+
+      <p>Ela ouvia rumores, como todo mundo ouvia rumores na corte. Que o príncipe Arthur havia recusado o casamento arranjado pelo pai. Que havia um desentendimento entre os dois. Que o Rei de Selenne estava descontente. Que o príncipe havia se retirado para uma propriedade no campo, longe da corte de Selenne, por motivos que os informantes da corte de Lunaris não conseguiam precisar.</p>
+
+      <p>Ela ouvia esses rumores e colocava-os no compartimento com a tampa fechada e continuava trabalhando.</p>
+
+      <p>Mas havia momentos — geralmente à noite, quando o palácio estava quieto e ela passava pelo corredor que dava para a ala dos jardins — em que o peso de tudo aquilo chegava sem aviso. Não com violência, não com lágrimas. Era mais como um aperto prolongado, a consciência física de uma ausência.</p>
+
+      <p>Ela havia deixado de ir ao jardim da lua depois que ele foi embora. Sabia que era dramático, sabia que em algum momento voltaria — afinal, era o seu jardim, era onde ela respirava. Mas havia algo em voltar a sentar naquela fonte que ela não estava pronta para fazer.</p>
+
+      <p>Até a noite de novembro, quatro meses depois da partida de Arthur, quando ela acordou às duas da manhã com a certeza súbita e inexplicável de que precisava ir ao jardim.</p>
+
+      <p>Havia neve fina do lado de fora — a primeira neve do ano, aquela que não cobre mas apenas insinua. As flores lunares estavam mortas, como estavam todo inverno, os galhos pelados e negros contra o branco leve do solo. A fonte estava coberta por uma fina camada de gelo.</p>
+
+      <p>Seraphine ficou de pé na entrada do jardim com um casaco por cima da camisola e os pés nos sapatos errados para a neve, e olhou para tudo aquilo — para o lugar que era deles sem que tivessem escolhido que fosse — e finalmente, quatro meses depois, permitiu-se sentir o que havia estado guardando.</p>
+
+      <p>Não foi espetacular. Não foi dramático. Foi simplesmente real: a saudade, a raiva que havia diminuído mas não sumido completamente, a ternura teimosa que persistia apesar de tudo, e por baixo de tudo aquela clareza que não havia ido embora mesmo enterrada sob meses de trabalho e protocolo.</p>
+
+      <p>Ela amava Arthur Archibald.</p>
+
+      <p>E não sabia se algum dia voltaria a vê-lo.</p>
+
+      <p>E havia uma diferença fundamental entre os dois fatos, e essa diferença era o lugar onde ela vivia agora.</p>
+
+      <div class="highlight">
+        <p>Ficou no jardim por uma hora com os pés ficando frios e os braços cruzados no casaco, e quando voltou para o quarto havia uma resolução em algum lugar dentro dela — não de agir, não ainda, mas de parar de tratar o próprio coração como um problema a ser gerenciado e começar a tratá-lo como parte de si mesma que merecia ser levada a sério.</p>
+      </div>
+
+      <p>Na manhã seguinte, ela escreveu uma carta.</p>
+
+      <p>Não para Arthur — não ainda. Para si mesma. Uma lista de coisas verdadeiras: o que ela sentia, o que ela queria, o que estava disposta a defender. Dobrou o papel, colocou dentro de um livro que ninguém mais lia na biblioteca, e sentiu que havia feito algo importante sem que ninguém soubesse.</p>
+
+      <p>O inverno passou com a lentidão específica dos invernos que carregam coisas. E quando a primavera chegou, trouxe consigo uma notícia de Selenne que nenhum informante havia previsto.</p>
+
+      <p>O Príncipe Arthur havia pedido ao pai permissão para viajar. Para Lunaris.</p>
+
+      <p>E o Rei de Selenne, depois de um mês de recusa, havia concedido.</p>
+    </div>
+    <div class="chapter-nav">
+      <button class="chapter-nav-btn" onclick="openChapter(7)">← Anterior</button>
+      <span class="chapter-counter"><a class="toc-link" onclick="showTOC()">Sumário</a></span>
+      <button class="chapter-nav-btn" onclick="openChapter(9)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- CAPÍTULO IX -->
+  <div class="chapter" id="chapter-9">
+    <div class="chapter-header">
+      <span class="chapter-number">Capítulo IX</span>
+      <h2 class="chapter-title">O Reencontro</h2>
+      <p class="chapter-subtitle">Quando o inverno cede para a primavera</p>
+    </div>
+    <div class="chapter-ornament">
+      <div class="chapter-ornament-line"></div>
+      ✦
+      <div class="chapter-ornament-line right"></div>
+    </div>
+    <div class="page">
+      <p>Seraphine soube da chegada de Arthur pela manhã, quando a Condessa Mirabel — com uma expressão que era impossível de classificar completamente como aprovação ou desaprovação, talvez fosse as duas — informou que um mensageiro de Selenne havia chegado na noite anterior com a notícia: o Príncipe Arthur Archibald chegaria a Lunaris dentro de quatro dias, sem delegação diplomática, sem o pai, sem pretexto político além de uma carta que dizia apenas que havia <em>"assuntos pessoais que precisavam ser tratados pessoalmente"</em>.</p>
+
+      <p>Seraphine leu a nota e ficou completamente quieta por um momento.</p>
+
+      <div class="dialogue">— E o Rei? — ela perguntou.</div>
+
+      <div class="dialogue">— Seu pai foi informado — disse Mirabel, com cuidado. — Diz que a visita é aceita.</div>
+
+      <p>Ela assentiu e dispensou a condessa. E depois que ficou sozinha no gabinete, colocou a nota sobre a mesa e ficou olhando para ela por um longo tempo.</p>
+
+      <p>Quatro dias. Quatro dias para decidir o que queria dizer. Para praticar a versão certa das palavras — não a versão protocolar, não a versão defensiva, mas a versão verdadeira, que era mais assustadora do que as outras.</p>
+
+      <p>Ela passou esses quatro dias sendo extraordinariamente produtiva em tudo que não dizia respeito a Arthur, o que era a forma que ela havia aprendido de lidar com antecipação.</p>
+
+      <p>E então, na tarde do quarto dia, o som de cavalos no pátio de chegada.</p>
+
+      <p>Ela estava na janela do gabinete — não ostensivamente, não se curvando para ver, mas havia passado para perto da janela com um documento nas mãos que nenhum ser humano honesto diria que estava lendo. E viu quando ele desmontou.</p>
+
+      <p>Oito meses. Oito meses desde aquela despedida no pátio com o protocolo entre eles. E ele era... igual. Diferente. Os cabelos escuros do mesmo comprimento. A postura do mesmo jeito — aquela calma que não era indiferença. Mas havia algo diferente na forma como ele carregava o corpo, uma leveza ausente da última vez que ela o havia visto, como se alguma coisa que ele havia estado carregando tivesse sido finalmente pousada.</p>
+
+      <p>Ele olhou para cima.</p>
+
+      <p>Para a janela.</p>
+
+      <p>Direto para ela.</p>
+
+      <p>Ela tinha experiência suficiente para não se afastar da janela como uma jovem apanhada espiando — ficou parada, com o documento ainda na mão, e o olhou de volta. E ele deu aquele sorriso — pequeno, privado, inteiramente para ela — e ela sentiu algo se abrir no peito com a força gentil de algo que havia estado fechado por muito tempo.</p>
+
+      <p>O protocolo ditava que ela esperasse pela audiência formal antes de encontrá-lo. O protocolo também havia ditado uma série de coisas ao longo da vida de Seraphine que ela havia cumprido fielmente, e havia pelo menos uma coisa que o protocolo não havia conseguido fazer: ditar o que estava dentro do coração dela.</p>
+
+      <p>Ela foi ao jardim da lua naquela noite.</p>
+
+      <p>As flores lunares estavam abrindo — a primeira semana da primavera, quando elas voltavam do inverno com a mesma paciência com que haviam esperado. O jardim cheirava a terra renovada e a flores que eram brancas como promessas cumpridas com atraso.</p>
+
+      <p>Arthur estava sentado na fonte.</p>
+
+      <p>Ela parou na entrada do jardim, como havia parado na primeira noite — mas diferente. Naquela primeira noite havia surpresa, havia suspeita. Esta noite havia... chegada. A sensação específica de voltar a um lugar que é seu.</p>
+
+      <div class="dialogue">— Você veio — ela disse.</div>
+
+      <div class="dialogue">— Disse que voltaria — disse ele, de pé agora, com os olhos nela. — Se você quisesse.</div>
+
+      <div class="dialogue">— Disse que queria.</div>
+
+      <div class="dialogue">— Disse. — Uma pausa. — E ainda quer?</div>
+
+      <p>Ela foi até a fonte. Sentou-se nela — o mesmo lugar, a mesma pedra fria e familiar — e olhou para ele ainda de pé a alguns passos.</p>
+
+      <div class="dialogue">— Oito meses — disse ela.</div>
+
+      <div class="dialogue">— Oito meses — disse ele.</div>
+
+      <div class="dialogue">— O que aconteceu?</div>
+
+      <p>Ele veio sentar-se ao lado dela — perto, da mesma forma que havia ficado perto naquelas noites antigas, com o ombro quase tocando o dela.</p>
+
+      <div class="dialogue">— Recusei o casamento — disse ele. — O que meu pai esperava de mim. Passamos meses em desacordo sobre isso. Fui para a propriedade do campo para não ter que discutir todos os dias e para ter espaço para pensar.</div>
+
+      <div class="dialogue">— E o que você pensou?</div>
+
+      <div class="dialogue">— Pensei — disse ele, com a voz quieta — que havia uma pessoa em Lunaris pela qual eu havia recusado o que meu pai queria, e que se isso valia alguma coisa, então precisava ser dito. Em pessoa. Não em carta.</div>
+
+      <p>Seraphine ficou olhando para as flores lunares.</p>
+
+      <div class="dialogue">— E o que seu pai pensa agora?</div>
+
+      <div class="dialogue">— Meu pai — disse Arthur, com um sopro de humor seco — chegou à conclusão, depois de muita resistência, que uma aliança com Lunaris seria politicamente vantajosa. — Uma pausa. — Especialmente se houver razões pessoais que a motivem.</div>
+
+      <p>Ela virou o rosto para olhá-lo.</p>
+
+      <div class="dialogue">— Você está me dizendo que seu pai aprova?</div>
+
+      <div class="dialogue">— Estou dizendo que meu pai viu que eu não ia ceder e decidiu encontrar uma forma de que isso fosse útil para ele — disse Arthur, com aquele humor que ela havia sentido tanta saudade sem ter me dado conta. — É o tipo de pai que ele é. Não é emocionante mas é funcional.</div>
+
+      <p>Ela olhou para ele por um longo momento. E havia tantas coisas que precisavam ser ditas — as que ela havia escrito para si mesma, as que havia guardado durante os meses do inverno — mas havia também aquela qualidade específica daquela noite, do jardim que estava voltando a ser dele com ela, das flores que abriam sem pedir permissão.</p>
+
+      <div class="dialogue">— Senti sua falta — ela disse, simplesmente. — Muito mais do que queria sentir.</div>
+
+      <p>E havia na simplicidade daquelas palavras toda a dureza dos meses entre eles, todo o peso do que havia custado chegar até ali — e também, por dentro de tudo isso, uma entrega que ela não havia feito antes com ninguém.</p>
+
+      <p>Arthur a olhou, e pela primeira vez desde que ela o conhecia, o rosto dele estava completamente aberto. Sem contenção, sem o humor como escudo, sem a teimosia como armadura. Era apenas ele — todos os dezenove anos e toda a inteligência emocional que às vezes ele mesmo não sabia que tinha — olhando para ela com algo que era tão claro que não precisava de nome.</p>
+
+      <div class="dialogue">— Seraphine — disse ele.</div>
+
+      <div class="dialogue">— Arthur.</div>
+
+      <div class="dialogue">— Posso dizer uma coisa sem interrupções de sino?</div>
+
+      <p>Ela sorriu — não o sorriso de princesa, o outro. O que saía pelo nariz.</p>
+
+      <div class="dialogue">— Tentarei não chamar o sino — disse ela.</div>
+
+      <p>E ele, pela primeira vez em toda a história deles, deixou sair tudo o que havia sido guardado.</p>
+    </div>
+    <div class="chapter-nav">
+      <button class="chapter-nav-btn" onclick="openChapter(8)">← Anterior</button>
+      <span class="chapter-counter"><a class="toc-link" onclick="showTOC()">Sumário</a></span>
+      <button class="chapter-nav-btn" onclick="openChapter(10)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- CAPÍTULO X -->
+  <div class="chapter" id="chapter-10">
+    <div class="chapter-header">
+      <span class="chapter-number">Capítulo X</span>
+      <h2 class="chapter-title">A Declaração</h2>
+      <p class="chapter-subtitle">O que foi guardado e finalmente dito</p>
+    </div>
+    <div class="chapter-ornament">
+      <div class="chapter-ornament-line"></div>
+      ✦
+      <div class="chapter-ornament-line right"></div>
+    </div>
+    <div class="page">
+      <p>Ele começou, como ela havia imaginado que começaria, com dificuldade.</p>
+
+      <p>Não porque fosse um homem sem palavras — Arthur tinha palavras, quando queria. Era que havia uma camada específica de si mesmo que ele havia guardado tão fundo por tanto tempo que buscar por ela era como escavar — necessário e desconfortável em igual medida.</p>
+
+      <div class="dialogue">— Eu cresci — começou ele, com a voz de quem está encontrando o caminho enquanto fala — acreditando que sentimentos eram coisas que podiam te atrapalhar. Que o tipo de pessoa que precisava ser — útil, políticamente capaz, sem o drama de uma herdeiro que não vai herdar — precisava manter as coisas dentro. — Uma pausa. — E eu ficava muito bom nisso. O humor ajudava. Se você faz a piada antes que a coisa doa, dói menos.</div>
+
+      <p>Seraphine ficou muito quieta, ouvindo com a qualidade de atenção que ele havia notado nela desde o início: real, sem pressa, sem já estar formulando a resposta.</p>
+
+      <div class="dialogue">— E então você apareceu descalça no meu jardim — disse ela, com suavidade.</div>
+
+      <div class="dialogue">— No <em>seu</em> jardim — ele corrigiu, com o canto da boca levantando. — Que eu havia invadido. — E então o sorriso sumiu, e voltou o sério. — E havia algo em você que era — real, de uma forma que eu não estava esperando. Não a princesa, não o protocolo. Você. Com os sapatos na mão e a raiva justa de ter saído de um jantar onde ninguém te via de verdade.</div>
+
+      <div class="dialogue">— Eu te via — disse ela, baixo.</div>
+
+      <div class="dialogue">— Eu sei. — Ele respirou. — É por isso que foi assustador. Porque você me via e eu não estava acostumado a ser visto. — Uma pausa. — E fui me acostumando, naquelas noites todas, e foi a melhor e a pior coisa que aconteceu comigo. A melhor porque era real. A pior porque quando você é visto de verdade e perde isso, a ausência tem um tamanho que você não esperava.</div>
+
+      <p>Seraphine sentiu algo apertar no peito com uma doçura específica.</p>
+
+      <div class="dialogue">— O que você sentiu quando partiu? — ela perguntou, porque precisava ouvir, porque havia passado meses imaginando e queria a versão real.</div>
+
+      <p>Arthur ficou quieto por um momento. A lua estava alta e as flores lunares estavam abertas ao máximo, com aquele perfume que ela havia começado a identificar como o cheiro do começo de tudo.</p>
+
+      <div class="dialogue">— Senti que havia deixado algo não dito — disse ele. — E que não dizer havia sido a coisa mais covarde que eu já havia feito. — Pausa. — Não o segredo do casamento. Isso foi errado e eu sei. Mas antes disso, antes de qualquer outra coisa — eu deveria ter dito que você era a primeira pessoa em muito tempo que me fez querer ser completamente honesto. Que você me fez querer ser, simplesmente, eu mesmo. — Ele a olhou. — E que isso para mim vale mais do que qualquer casamento diplomático ou aprovação do meu pai ou posição que eu não vou ter de qualquer forma.</div>
+
+      <p>Seraphine ficou olhando para ele.</p>
+
+      <p>E havia tantas coisas dentro dela naquele momento — a ternura, a saudade que estava sendo respondida em tempo real, a vontade de rir e de chorar ao mesmo tempo, aquela maldita clareza que havia persistido por oito meses de inverno e silêncio.</p>
+
+      <div class="dialogue">— Arthur Archibald — disse ela, com uma voz que era firme de uma forma diferente das outras vezes que havia sido firme. Não a firmeza do protocolo. A firmeza de algo escolhido conscientemente. — Eu passei os últimos oito meses colocando sentimentos em compartimentos fechados e trabalhando muito para não ter que abrir nenhum deles. — Pausa. — E acho que fui boa nisso. Mas não foi a coisa mais honesta que já fiz. A coisa mais honesta que já fiz foi sentar-me nesta fonte há oito meses com um estranho que havia invadido meu jardim e decidir, sem ter nenhuma razão política para isso, ficar.</div>
+
+      <p>Ele a olhava com aquela atenção total que era o que ela havia sentido mais falta — aquela qualidade de ser o foco de toda a presença de alguém.</p>
+
+      <div class="dialogue">— Então — ela continuou — vou ser honesta agora, porque acho que acabamos de provar que o silêncio nos custa mais do que a verdade. — Respirou. — Eu te amo, Arthur. Com a parte de mim que nunca aprendeu a fazer política. Com a parte que floresce à noite e que chora por coisas pequenas e que saiu descalça porque não suportava mais o peso. — Uma pausa. — E com a parte que entende exatamente o que isso significa para dois herdeiros de reinos que têm problemas maiores do que sentimentos. E que decide, conscientemente, que sente de qualquer forma.</div>
+
+      <p>O silêncio que se seguiu foi o tipo mais raro de silêncio: aquele que vem depois que a coisa mais verdadeira do mundo foi dita, e o ar precisa de um momento para reconhecer o peso do que acaba de existir.</p>
+
+      <p>Arthur ficou olhando para ela por esse momento. E então fez aquela coisa que ela havia visto nele pela primeira vez naquela noite no baile — quando os olhares se cruzaram do outro lado do salão e o sorriso havia sido só para ela: deixou sair, sem filtro, completamente, o que estava sentindo. Não havia contenção. Não havia humor como escudo. Havia apenas o que estava por baixo de tudo, que era simples e claro como água limpa.</p>
+
+      <div class="dialogue">— Eu te amo — disse ele. — Com o tipo de certeza que não passa. Acredite em mim, tentei verificar nos últimos oito meses.</div>
+
+      <p>Ela riu — aquela risada de novo, a incontrolável, a que saía pelo nariz — e ele sorriu com ela, e por um segundo eles eram apenas dois jovens de dezenove anos no jardim que florescia à noite, sem coroas, sem protocolos, sem o peso de nada além da alegria específica de ter dito a coisa verdadeira e ter sido ouvido de volta.</p>
+
+      <p>E então Arthur levantou a mão e colocou-a com muita delicadeza contra o lado do rosto dela — o mesmo gesto que ela havia feito no gazebo, meses atrás, quando a chuva caía e o sino interrompeu — e perguntou com os olhos o que havia pedido com os olhos antes.</p>
+
+      <p>E desta vez não havia sino.</p>
+
+      <p>Desta vez havia apenas a luna, e as flores que não precisavam de luz para abrir, e o jardim que era deles desde a primeira noite mesmo quando nenhum dos dois sabia disso ainda.</p>
+
+      <p>Seraphine inclinou-se.</p>
+
+      <p>E o beijo que aconteceu não foi dramático da forma que os livros descrevem beijos. Não foi fogo e tempestade. Foi mais como o tipo de coisa que é completamente inevitável uma vez que começa — suave, presente, real, com o peso de tudo que havia custado chegar até ali convertido em algo que era apenas isto: dois corações que haviam, finalmente, chegado ao mesmo lugar ao mesmo tempo.</p>
+
+      <div class="highlight">
+        <p>Quando terminaram, ela ficou com a testa apoiada na dele, com os olhos fechados, e sentiu — pela primeira vez em muito tempo — que o peso da coroa havia ficado lá fora. Que por esta noite, neste jardim, sob esta lua, ela era apenas ela mesma. E era o suficiente. Era mais do que o suficiente.</p>
+      </div>
+
+      <div class="dialogue">— Então e agora? — ele disse, com a voz diferente — mais próxima, mais quente.</div>
+
+      <div class="dialogue">— Agora — disse ela, abrindo os olhos — temos um problema diplomático e uma solução que dois reis provavelmente vão precisar de algum tempo para aceitar.</div>
+
+      <div class="dialogue">— Dois reis que já foram avisados que seus filhos são muito teimosos para aceitar respostas que não querem ouvir — disse ele, e havia no tom aquela mistura de humor e seriedade que era tão especificamente ele. — Posso ser muito convincente quando preciso.</div>
+
+      <div class="dialogue">— Eu sei — disse ela. — Já fui convencida.</div>
+
+      <p>Ele sorriu de verdade, aquele sorriso completo que ela havia catalogado e memorizado e sentido saudade.</p>
+
+      <div class="dialogue">— Então temos um plano?</div>
+
+      <div class="dialogue">— Temos um começo — disse Seraphine. — O que é diferente de um plano mas é mais honesto.</div>
+
+      <p>E ficaram ali por mais horas do que deveriam, no jardim da lua, enquanto as flores abriam ao redor deles e a noite avançava em direção ao amanhecer — falando, rindo, ficando em silêncio com a qualidade de silêncio que é confortável, construindo com palavras e pausas e o ocasional ombro encostado no ombro aquele tipo de coisa que não tem data de vencimento.</p>
+    </div>
+    <div class="chapter-nav">
+      <button class="chapter-nav-btn" onclick="openChapter(9)">← Anterior</button>
+      <span class="chapter-counter"><a class="toc-link" onclick="showTOC()">Sumário</a></span>
+      <button class="chapter-nav-btn" onclick="openChapter(11)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- EPÍLOGO -->
+  <div class="chapter" id="chapter-11">
+    <div class="chapter-header">
+      <span class="chapter-number">Epílogo</span>
+      <h2 class="chapter-title">Onde o Sol Toca o Mar</h2>
+      <p class="chapter-subtitle">Um ano depois — e todos os anos depois</p>
+    </div>
+    <div class="chapter-ornament">
+      <div class="chapter-ornament-line"></div>
+      ✦
+      <div class="chapter-ornament-line right"></div>
+    </div>
+    <div class="page">
+      <p>O tratado de aliança entre Lunaris e Selenne foi assinado no verão seguinte, com a cerimônia realizada no Grande Salão do Palácio de Lunaris perante os dois reis, a corte de ambos os reinos, e um número considerável de conselheiros e diplomatas que tinham opiniões diferentes sobre o assunto mas haviam aprendido, ao longo dos meses de negociação, que a princesa herdeira e o segundo príncipe eram igualmente teimosos e igualmente inteligentes e que era mais simples trabalhar com eles do que contra.</p>
+
+      <p>A Condessa Mirabel assistiu às assinaturas com aquela expressão impossível de classificar — e então, quando os reis trocaram apertos de mão e a sala começou a murmurar o tipo de murmúrio que é simultaneamente aprovação e incredulidade, ela se aproximou de Seraphine e disse, com uma voz baixa que só ela ouvia:</p>
+
+      <div class="dialogue">— A Alteza provou que estava certa e eu estava errada. — Uma pausa. — Isso não acontece frequentemente. Aproveite.</div>
+
+      <p>Seraphine riu — a risada de verdade, aquela — e sentiu a ternura surpreendente que às vezes a velha conselheira conseguia provocar nela quando baixava a guarda por dois segundos.</p>
+
+      <p>Arthur, que estava a dois metros de distância conversando com o irmão mais velho que havia vindo como representante de Selenne, ouviu a risada e virou a cabeça. E deu aquele sorriso — o pequeno, o privado, o que era só para ela — e ela respondeu com o sorriso que era só para ele, e o irmão mais velho de Arthur olhou de um para o outro e depois olhou para o teto com a expressão de alguém que está pedindo paciência a alguma força superior.</p>
+
+      <p>Mais tarde, depois que os reis partiram para o banquete e os corredores começaram a esvaziar, Seraphine e Arthur se encontraram no jardim da lua.</p>
+
+      <p>Era o verão de volta, o primeiro verão desde o começo de tudo — as flores lunares estavam em plena floração, o jardim cheio daquele perfume de mel e noite que ela agora associava com o peso que vai embora. A lua estava cheia, como havia estado na primeira noite.</p>
+
+      <div class="dialogue">— Um ano — disse Arthur, sentando-se na borda da fonte — e dois reinos, uma aliança, um barão recalcitrante, e pelo menos três momentos em que eu achei que meu pai fosse me mandar para uma propriedade no extremo norte.</div>
+
+      <div class="dialogue">— E um tratado assinado — disse Seraphine, sentando-se ao lado dele. Perto. Da forma que era deles.</div>
+
+      <div class="dialogue">— E um tratado assinado — ele concordou. — Que foi a desculpa política mais elegante que já usei para fazer o que queria fazer de qualquer forma.</div>
+
+      <p>Ela se encostou no ombro dele com a naturalidade de algo que havia se tornado completamente habitual durante o ano — visitas, cartas, negociações que eram também encontros no jardim, conversas que atravessavam a madrugada, uma construção que não havia parado desde aquele reencontro da primavera.</p>
+
+      <div class="dialogue">— Arthur.</div>
+
+      <div class="dialogue">— Seraphine.</div>
+
+      <div class="dialogue">— Estou feliz — disse ela.</div>
+
+      <p>Havia na simplicidade dessas palavras toda a complexidade do que havia custado dizê-las — não porque fossem difíceis de dizer, mas porque eram verdadeiras de uma forma que não precisava de ornamento. , que havia crescido com o peso do ouro na cabeça e aprendera que sentimentos eram coisas para guardar em compartimentos, estava feliz. Com a parte que florescia à noite. Com a parte que saía descalça. Com toda a parte.</p>
+Seraphine Waldorf
+      <p>Arthur colocou o braço ao redor dos ombros dela — um gesto simples, presente, completamente natural — e ficaram assim olhando para as flores que abriam sem pedir permissão.</p>
+
+      <div class="dialogue">— Eu também — disse ele. E depois, com aquele humor que era o dele e que ela havia aprendido a receber como linguagem de amor: — Embora a propriedade no extremo norte ainda seja uma possibilidade legítima dependendo de como meu pai reagir à próxima coisa que precisamos discutir.</div>
+
+      <div class="dialogue">— Que próxima coisa?</div>
+
+      <div class="dialogue">— O fato de que — disse ele, com uma voz que havia ficado mais séria, com aquela qualidade que ela reconhecia agora como o sério-de-verdade embaixo do humor — dois reinos aliados têm mais estabilidade quando as razões da aliança são sólidas. E razões pessoais são as mais sólidas.</div>
+
+      <p>Seraphine se afastou levemente para poder olhá-lo direito.</p>
+
+      <p>Arthur a olhava com os olhos castanho-escuros que continuavam tendo aquela qualidade de guardar uma história, mas a história havia ficado mais rica naquele ano, havia ficado também a história deles dois, e ela conhecia esse novo capítulo intimamente.</p>
+
+      <div class="dialogue">— Você está me pedindo algo? — ela disse, com uma suavidade que tinha também um sorriso dentro.</div>
+
+      <div class="dialogue">— Estou — disse ele. — De forma tecnicamente imprudente do ponto de vista diplomático, sem ter consultado previamente nenhum dos nossos pais, sem um anel porque não tive tempo de encomendar um decente — e aqui ele parou, com algo de genuinamente nervoso que era raro nele e que por isso era completamente adorável — sem nenhuma dessas formalidades que os dois sabemos que vão vir de qualquer forma. — Pausa. — Mas antes de qualquer formalidade, antes de qualquer tratado ou conselho ou cerimônia, quero te perguntar: você quer isso comigo? Não a aliança. Você. Comigo.</div>
+
+      <div class="highlight">
+        <p>Seraphine ficou olhando para ele por um momento que era ao mesmo tempo brevíssimo e suficientemente longo para conter tudo — o jardim na primeira noite, a flor lunar deixada na fonte, a chuva no gazebo, o milímetro que ficou em aberto, os meses do inverno, o reencontro, a declaração, o ano inteiro que havia construído esta noite.</p>
+      </div>
+
+      <p>E então disse a coisa que havia dito tantas vezes de formas diferentes — no jardim, no corredor, na janela do gabinete com um documento na mão fingindo não estar olhando para ele —, disse de novo, de uma vez, sem compartimento, sem guardas:</p>
+
+      <div class="dialogue">— Sim.</div>
+
+      <p>Não foi dramático. Não foi espetacular. Foi apenas verdadeiro, da forma que as coisas mais importantes geralmente são.</p>
+
+      <p>Arthur sorriu — o sorriso completo, aquele que chegava aos olhos antes de chegar à boca — e inclinou a cabeça para pousar a testa na dela, os olhos fechados, com a qualidade de alguém que está, finalmente, no lugar certo.</p>
+
+      <div class="dialogue">— Meu pai vai reclamar — ele disse, com a voz que era só para dentro deles dois.</div>
+
+      <div class="dialogue">— O meu também — disse ela.</div>
+
+      <div class="dialogue">— E a Condessa Mirabel vai ter uma opinião.</div>
+
+      <div class="dialogue">— Ela sempre tem.</div>
+
+      <div class="dialogue">— E vai ser complicado e vai demorar e vai ter pelo menos uma negociação difícil antes que tudo esteja resolvido.</div>
+
+      <div class="dialogue">— Arthur.</div>
+
+      <div class="dialogue">— Seraphine.</div>
+
+      <div class="dialogue">— Estou bem com tudo isso — disse ela. — Se você estiver.</div>
+
+      <p>Ele a olhou. E havia naquele olhar a mesma coisa que havia na primeira noite — aquela qualidade de alguém que está vendo mais do que o que está em cima da mesa —, mas agora o que ele via era diferente. Agora ele via o que um ano de conhecer uma pessoa de verdade ensina: não a princesa, não o protocolo, mas Seraphine — com o coração que era mais forte que qualquer reino e mais mole que qualquer flor, com os pés que às vezes precisavam sentir a grama fria, com a risada que saía pelo nariz nos momentos errados, com a clareza que havia persistido por meses de inverno e silêncio e encontrado, no outro lado, exatamente o que merecia.</p>
+
+      <div class="dialogue">— Estou bem com tudo isso — disse ele.</div>
+
+      <p>E ficaram no jardim até o amanhecer, como haviam ficado tantas vezes — falando, calando, deixando que a noite fizesse o que faz quando você está com a pessoa certa: passar rápido demais.</p>
+
+      <p>As flores lunares fecharam as pétalas com as primeiras luzes da manhã.</p>
+8
+      <p>E Seraphine Waldorf, princesa herdeira de Lunaris, saiu do jardim com os sapatos na mão e os pés molhados de orvalho e o coração mais leve do que havia sido em toda a sua vida — não porque havia solucionado todas as complicações, porque ainda havia muitas por vir — mas porque havia algo que ela sabia agora, com a certeza específica das coisas que foram conquistadas ao invés de recebidas:</p>
+
+      <p>Que o peso de uma coroa é real.</p>
+
+      <p>E que há pessoas que ficam ao seu lado mesmo assim. Não apesar do peso — com você, enquanto você carrega. Que entendem porque carregam o seu próprio peso. Que fazem perguntas de verdade e ouvem as respostas de verdade e te fazem rir com a risada errada e florescem à noite como as flores do jardim, sem precisar de luz do sol para abrir.</p>
+
+      <p>Que o amor, descobriu ela, não era a ausência de complicações.</p>
+
+      <p>Era ter alguém para quem as complicações valiam a pena.</p>
+
+      <div class="highlight">
+        <p>E no jardim que havia sido deles desde a primeira noite — mesmo quando nenhum dos dois sabia disso ainda —, as flores lunares dormiam até o próximo anoitecer, esperando pacientemente, como sempre, para florescer de novo no escuro.</p>
+      </div>
+
+      <p style="text-align:center; font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold-dark); margin-top: 40px; letter-spacing: 4px;">✦ FIM ✦</p>
+    </div>
+    <div class="chapter-nav">
+      <button class="chapter-nav-btn" onclick="openChapter(10)">← Anterior</button>
+      <span class="chapter-counter"><a class="toc-link" onclick="showTOC()">Sumário</a></span>
+      <button class="chapter-nav-btn" disabled>Fim ✦</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Scroll to top -->
+<div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+  function showCover() {
+    document.getElementById('cover').style.display = 'flex';
+    document.getElementById('toc').style.display = 'none';
+    document.getElementById('book').style.display = 'none';
+    window.scrollTo(0,0);
+    updateProgress(0);
+  }
+
+  function showTOC() {
+    document.getElementById('cover').style.display = 'none';
+    document.getElementById('toc').style.display = 'block';
+    document.getElementById('book').style.display = 'none';
+    window.scrollTo(0,0);
+    updateProgress(0);
+  }
+
+  function openChapter(index) {
+    document.getElementById('cover').style.display = 'none';
+    document.getElementById('toc').style.display = 'none';
+    document.getElementById('book').style.display = 'block';
+
+    document.querySelectorAll('.chapter').forEach(ch => ch.classList.remove('active'));
+    const chapter = document.getElementById('chapter-' + index);
+    if (chapter) {
+      chapter.classList.add('active');
+    }
+    window.scrollTo(0,0);
+    updateProgress((index + 1) / 12 * 100);
+  }
+
+  function updateProgress(pct) {
+    document.getElementById('progress').style.width = pct + '%';
+  }
+
+  // Scroll to top button
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('scrollTop');
+    if (window.scrollY > 400) {
+      btn.classList.add('visible');
+    } else {
+      btn.classList.remove('visible');
+    }
+  });
+</script>
+</body>
+</html>
